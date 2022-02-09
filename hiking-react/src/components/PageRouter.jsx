@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import FormLogin from "./FormLogin";
 import FormRegister from "./FormRegister";
+import FormTour from "./FormTour";
 import PageHome from "./PageHome";
 
 const PageRouter = () => {
@@ -18,6 +19,10 @@ const PageRouter = () => {
   } else if (route === 'LOGIN') {
     jsx = (
       <FormLogin />
+    );
+  } else if (route === 'ADD_TOUR') {
+    jsx = (
+      <FormTour />
     );
   } else {
     jsx = (
