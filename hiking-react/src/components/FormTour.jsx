@@ -34,6 +34,42 @@ const FormTour = () => {
     });
   };
 
+  const validator = (formState) => {
+    let test = true;
+
+    if (formState.name === '') {
+      // name ne sme biti prazno
+      test = false;
+    }
+    if (formState.description === '') {
+      // description ne sme biti prazno
+      test = false;
+    }
+    if (formState.trail_length < 1) {
+      // trail lenght ne sme biti manje od 1
+      test = false;
+    }
+    if (formState.max_participants < 1) {
+      // max_participants ne sme biti manje od 1
+      test = false;
+    }
+
+    return test;
+  };
+
+  const handleSubmit = (e)=> {
+    // ovo je handle za onSubmit event forme
+    e.preventDefault(); // ovo sprecava da browser automatski submituje
+    if (validator(formState)) {
+      // ako prodje validaciju forme
+      console.log('submit...');
+      console.log(formState);
+    } else {
+      // ako ne prodje validaciju forme
+      window.alert('Form validation error! :(')
+    }
+  };
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,7 +86,7 @@ const FormTour = () => {
           <Typography component="h1" variant="h3">
             Create tour
           </Typography>
-          <Box component="form" onSubmit={() => { }} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               id="tourname"
               label="Tour name"
