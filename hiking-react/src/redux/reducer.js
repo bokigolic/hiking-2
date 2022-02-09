@@ -1,6 +1,8 @@
+import { dummyTours } from "../utils/dummy-tours";
+
 const initialState = {
-    nesto: 'bla bla',
-    route: 'HOME'
+    route: 'HOME',
+    tours: dummyTours
 };
 
 const rootReducer = (state = initialState, action) => {
