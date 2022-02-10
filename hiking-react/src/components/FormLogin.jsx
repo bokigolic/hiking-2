@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,8 +14,52 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const FormLogin = () => {
-
   const theme = createTheme();
+
+  const preset = {
+    username: '',
+    password: '',
+    rememberme: true
+  };
+
+  const [formState, setformState] = useState(preset);
+
+  const handleChange = (e) => {
+    // univerzalni handler za sva inpout polja
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    setformState({
+      ...formState,
+      [name]: value
+    });
+  };
+
+  const validator = () => {
+    let test = true;
+
+    if (formState.username === '') {
+      test = false;
+    }
+    if (formState.password === '') {
+      test = false;
+    }
+
+    return test;
+  };
+
+  const handleClickSubmit = (e) => {
+    // ovo je handle za OBICAN CLICK event na taster
+    e.preventDefault(); // ovo sprecava da browser automatski submituje
+    if (validator(formState)) {
+      // prosla validacije
+      console.log('click submit...')
+      console.log(formState)
+    } else {
+      // pala validacija
+      window.alert('Form validation error :(')
+    }
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -40,31 +85,41 @@ const FormLogin = () => {
             noValidate sx={{ mt: 1 }}
           >
             <TextField
+              label="Username"
+              name="username"
+              value={formState.username}
+              onChange={handleChange}
               margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
-              name="email"
               autoComplete="email"
               autoFocus
             />
             <TextField
+              label="Password"
+              name="password"
+              value={formState.password}
+              onChange={handleChange}
+              type="password"
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
               id="password"
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox 
+                color="primary" 
+                name="rememberme"
+                checked={formState.rememberme}
+                onChange={handleChange}
+              />}
               label="Remember me"
             />
             <Button
-              type="submit"
+              type="button"
+              onClick={handleClickSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
