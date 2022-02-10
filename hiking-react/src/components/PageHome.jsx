@@ -1,4 +1,4 @@
-import { FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Box, Container, CssBaseline, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -8,8 +8,8 @@ const PageHome = (props) => {
   const preset = {
     search: '',
     difficulty: 'ALL',
-    trail_length: 1,
-    max_participants: 99
+    trail_length_min: 1,
+    trail_length_max: 99,
   };
 
   const [formState, setFormState] = useState(preset);
@@ -29,12 +29,36 @@ const PageHome = (props) => {
   // SEKCIJA LISTA TURA
   const tours = useSelector((state) => state.tours); // uzimamo podatak tours iz globalnog reducovog statea apliakcije
 
-  const filteredTours = tours.filter((tour)=>{
-    if (tour.difficulty === formState.difficulty || formState.difficulty === 'ALL') {
-      return true; // stay ina array
-    } else {
-      return false; // deleted from array
+  const filteredTours = tours.filter((tour) => {
+    let test = true;
+
+    // filtriranej po search-u
+    if (formState.search !== '') {
+      // filtriramo po search recima samo ako je nesto ukucano
+      if (tour.name.toUpperCase().includes(formState.search.toUpperCase()) || tour.description.toUpperCase().includes(formState.search.toUpperCase())) {
+        // .toUpperCase() pretvara sva slovau velik aradi poredjenja kako bi bilo svejedno da li smo kucali velika ili mala
+        // true
+      } else {
+        test = false;
+      }
     }
+
+    // filtriranje po difficulty
+    if (tour.difficulty === formState.difficulty || formState.difficulty === 'ALL') {
+      // return true; // stay in aarray
+    } else {
+      // return false; // deleted from array
+      test = false;
+    }
+
+    // filtriranje po min mac
+    if (tour.trail_length >= formState.trail_length_min && tour.trail_length <= formState.trail_length_max) {
+      // true
+    } else {
+      test = false;
+    }
+
+    return test;
   });
 
   let jsx = filteredTours.map((tour, index) => {
@@ -43,7 +67,7 @@ const PageHome = (props) => {
         <h4>{tour.name}</h4>
         <div>{tour.description}</div>
         <div>{tour.date}</div>
-        <div>{tour.trail_legth}</div>
+        <div>{tour.trail_length}</div>
         <div>{tour.difficulty}</div>
         <div>{tour.max_participants}</div>
       </div>
@@ -55,18 +79,72 @@ const PageHome = (props) => {
       <h1> Home page </h1>
       <h3>Filter tours</h3>
 
-      <FormLabel id="difficulty">Difficulty</FormLabel>
-            <RadioGroup
-              row
-              name="difficulty"
-              value={formState.difficulty}
-              onChange={handleChange}
-            >
-              <FormControlLabel value="ALL" control={<Radio />} label="All" />
-              <FormControlLabel value="EASY" control={<Radio />} label="Easy" />
-              <FormControlLabel value="MEDIUM" control={<Radio />} label="Medium" />
-              <FormControlLabel value="HARD" control={<Radio />} label="Hard" />
-            </RadioGroup>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <TextField
+            id="search"
+            label="Filter by keywords"
+            name="search"
+            value={formState.search}
+            onChange={handleChange}
+            margin="normal"
+            required
+            fullWidth
+            autoFocus
+          />
+          <Grid container>
+            <Grid item xs>
+              <TextField
+                id="trail_length_min"
+                label="Trail length min."
+                name="trail_length_min"
+                value={formState.trail_length_min}
+                onChange={handleChange}
+                type="number"
+                margin="normal"
+                required
+                fullWidth
+                autoFocus
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                id="trail_length_max"
+                label="Trail length max."
+                name="trail_length_max"
+                value={formState.trail_length_max}
+                onChange={handleChange}
+                type="number"
+                margin="normal"
+                required
+                fullWidth
+                autoFocus
+              />
+            </Grid>
+          </Grid>
+
+          <FormLabel id="difficulty">Difficulty</FormLabel>
+          <RadioGroup
+            row
+            name="difficulty"
+            value={formState.difficulty}
+            onChange={handleChange}
+          >
+            <FormControlLabel value="ALL" control={<Radio />} label="All" />
+            <FormControlLabel value="EASY" control={<Radio />} label="Easy" />
+            <FormControlLabel value="MEDIUM" control={<Radio />} label="Medium" />
+            <FormControlLabel value="HARD" control={<Radio />} label="Hard" />
+          </RadioGroup>
+        </Box>
+      </Container>
 
       <h4>Tours</h4>
       {jsx}

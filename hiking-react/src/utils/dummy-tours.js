@@ -24,7 +24,7 @@ export const dummyTours = [{
         description: 'Nice tour...',
         date: '02/09/2022',
         difficulty: 'MEDIUM',
-        trail_length: 1,
+        trail_length: 5,
         max_participants: 99
     },
     {
@@ -33,7 +33,7 @@ export const dummyTours = [{
         description: 'Nice tour...',
         date: '02/09/2022',
         difficulty: 'HARD',
-        trail_length: 1,
+        trail_length: 17,
         max_participants: 99
     },
     {
@@ -42,7 +42,7 @@ export const dummyTours = [{
         description: 'Nice tour...',
         date: '02/09/2022',
         difficulty: 'EASY',
-        trail_length: 1,
+        trail_length: 30,
         max_participants: 99
     },
 ];
