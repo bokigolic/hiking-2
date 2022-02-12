@@ -36,6 +36,13 @@ const App = () => {
     })
   };
 
+  const handleClickMyTours = (e) => {
+    dispatch({
+      type: 'ROUTE_SET',
+      payload: 'MY_TOURS'
+    })
+  };
+
   const handleClickAddTour = (e) => {
     dispatch({
       type: 'ROUTE_SET',
@@ -59,6 +66,7 @@ const App = () => {
         <div onClick={handleClickHome}>Home</div>
         <div onClick={handleClickRegister}>Register</div>
         <div onClick={handleClickLogin}>Login</div>
+        <div onClick={handleClickMyTours}>My Tours</div>
         <div onClick={handleClickAddTour}>Add tour</div>
         <div onClick={handleClickAddReview}>Add review</div>
         <div onClick={handleClickAbout}>About...</div>

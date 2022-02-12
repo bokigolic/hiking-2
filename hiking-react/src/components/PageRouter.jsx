@@ -4,6 +4,7 @@ import FormRegister from "./FormRegister";
 import FormReview from "./FormReview";
 import FormTour from "./FormTour";
 import PageHome from "./PageHome";
+import PageMyTours from "./PageMyTours";
 
 const PageRouter = () => {
   const route = useSelector(state => state.route); // uzimamo podatak route iz globalnog reducovog statea apliakcije
@@ -28,6 +29,10 @@ const PageRouter = () => {
   } else if (route === 'ADD_REVIEW') {
     jsx = (
       <FormReview />
+    );
+  } else if (route === 'MY_TOURS') {
+    jsx = (
+      <PageMyTours />
     );
   } else {
     jsx = (
