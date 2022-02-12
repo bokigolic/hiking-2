@@ -39,7 +39,7 @@ const PageMyTours = (props) => {
   return (
     <>
       <h1> My Tours </h1>
-      <table>
+      <table className="my-tours">
         <tbody>
           {jsx}
         </tbody>

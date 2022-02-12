@@ -14,10 +14,10 @@ const TourItem = (props) => {
     <div>
       <h4>{tour.name}</h4>
       <div>{tour.description}</div>
-      <div>{tour.date}</div>
-      <div>{tour.trail_length}</div>
-      <div>{tour.difficulty}</div>
-      <div>{tour.max_participants}</div>
+      <div>Date: {tour.date}</div>
+      <div>Trail length: {tour.trail_length}</div>
+      <div>Difficulty: {tour.difficulty}</div>
+      <div>Myx. number of participants: {tour.max_participants}</div>
       <div>Average rating: {averageRating}</div>
       <Typography component="legend">Average rating</Typography>
       <Rating
