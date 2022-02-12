@@ -1,23 +1,6 @@
+import { Rating, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
-
-
-const calculateAverageRating = (reviews, tour_id)=> {
-  let averageRating = 0;
-  let totalRating = 0;
-  let count = 0;
-  reviews.forEach((review)=>{
-    if (review.tour_id === tour_id) {
-      // znaci ovo je review koji pripada toj turi i za njega uzimamo rating u obzir za racunanje
-      totalRating += review.rating; //       totalRating = totalRating + review.rating;
-      count++; // count += 1;
-    }
-  });
-  if (count !== 0) {
-    averageRating = totalRating / count;
-  }
-  return averageRating;
-};
-
+import { calculateAverageRating } from "../utils/tour-utils";
 
 const TourItem = (props) => {
   const tour = props.tour;
@@ -36,6 +19,12 @@ const TourItem = (props) => {
       <div>{tour.difficulty}</div>
       <div>{tour.max_participants}</div>
       <div>Average rating: {averageRating}</div>
+      <Typography component="legend">Controlled</Typography>
+      <Rating
+        name="average_rating"
+        value={averageRating}
+        readOnly
+      />
     </div>
   )
 };
