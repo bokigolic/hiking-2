@@ -1,8 +1,10 @@
+import { dummyReviews } from "../utils/dummy-reviews";
 import { dummyTours } from "../utils/dummy-tours";
 
 const initialState = {
     route: 'HOME',
-    tours: dummyTours
+    tours: dummyTours,
+    reviews: dummyReviews,
 };
 
 const rootReducer = (state = initialState, action) => {
