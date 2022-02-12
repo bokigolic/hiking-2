@@ -43,6 +43,13 @@ const App = () => {
     })
   };
 
+  const handleClickAddReview = (e) => {
+    dispatch({
+      type: 'ROUTE_SET',
+      payload: 'ADD_REVIEW'
+    })
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -53,6 +60,7 @@ const App = () => {
         <div onClick={handleClickRegister}>Register</div>
         <div onClick={handleClickLogin}>Login</div>
         <div onClick={handleClickAddTour}>Add tour</div>
+        <div onClick={handleClickAddReview}>Add review</div>
         <div onClick={handleClickAbout}>About...</div>
       </header>
       <PageRouter />
