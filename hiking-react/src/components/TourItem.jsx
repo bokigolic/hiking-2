@@ -1,18 +1,31 @@
 import { Rating, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { calculateAverageRating } from "../utils/tour-utils";
 
 const TourItem = (props) => {
+  const dispatch = useDispatch();
   const tour = props.tour;
 
-  const review = useSelector(state => state.reviews);
+  const reviews = useSelector(state => state.reviews);
   const tour_id = tour._id;
 
-  let averageRating = calculateAverageRating(review, tour_id);
+  let averageRating = calculateAverageRating(reviews, tour_id);
+
+  const handleClickSingleTour = (e) => {
+    dispatch({
+      type: 'ROUTE_WITH_PARAMS_SET',
+      payload: {
+        route: 'TOUR',
+        params: {
+          tour_id: tour_id
+        }
+      }
+    })
+  };
 
   return (
     <div>
-      <h4>{tour.name}</h4>
+      <h4 onClick={handleClickSingleTour}>{tour.name}</h4>
       <div>{tour.description}</div>
       <div>Date: {tour.date}</div>
       <div>Trail length: {tour.trail_length}</div>

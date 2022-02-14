@@ -16,9 +16,8 @@ import { getSingleTourById } from "../utils/tour-utils";
 const FormTour = (props) => {
   const theme = createTheme();
 
-  const routeParams = useSelector((state) => state.routeParams); // uzimamo routeParams iz redux statea
   const tours = useSelector((state) => state.tours); // uzimamo routeParams iz redux statea
-
+  const routeParams = useSelector((state) => state.routeParams); // uzimamo routeParams iz redux statea
   const tour_id = routeParams.tour_id;
 
   const modeEdit = props.modeEdit;
@@ -34,11 +33,14 @@ const FormTour = (props) => {
 
   const [formState, setFormState] = useState(preset);
 
-  useEffect(()=>{
+  useEffect(() => {
+    // pokrece se samo kad primi podatke tour_id i tours
+    // Svrha je prakticno u tome da limitira kada se poziva setState jer react reaguje na njega i kad ne bi limitirali u beskonanost bi bil iscrtavana komponenta
     const editigTour = getSingleTourById(tour_id, tours);
-    setFormState(editigTour);
-  }, [tour_id, tours])
-
+    if (editigTour !== null) {
+      setFormState(editigTour);
+    }
+  }, [tour_id, tours]);
 
   const handleChange = (e) => {
     // univerzalni handler za sva inpout polja

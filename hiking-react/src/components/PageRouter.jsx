@@ -5,6 +5,7 @@ import FormReview from "./FormReview";
 import FormTour from "./FormTour";
 import PageHome from "./PageHome";
 import PageMyTours from "./PageMyTours";
+import PageSingleTour from "./PageSingleTour";
 
 const PageRouter = () => {
   const route = useSelector(state => state.route); // uzimamo podatak route iz globalnog reducovog statea apliakcije
@@ -37,6 +38,10 @@ const PageRouter = () => {
   } else if (route === 'MY_TOURS') {
     jsx = (
       <PageMyTours />
+    );
+  } else if (route === 'TOUR') {
+    jsx = (
+      <PageSingleTour />
     );
   } else {
     jsx = (
