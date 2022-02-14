@@ -7,9 +7,29 @@ const PageMyTours = (props) => {
   const dispatch = useDispatch();
   const tours = useSelector((state) => state.tours); // uzimamo podatak tours iz globalnog reducovog statea apliakcije
 
+  const handleClickAddTour = (e) => {
+    dispatch({
+      type: 'ROUTE_SET',
+      payload: 'ADD_TOUR'
+    })
+  };
+
+  const _handleClickEditTour = (tour_id) => {
+    dispatch({
+      type: 'ROUTE_WITH_PARAMS_SET',
+      payload: {
+        route: 'EDIT_TOUR',
+        params: {
+          tour_id: tour_id
+        }
+      }
+    })
+  };
+
   const myTours = tours; // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
 
   let jsx = myTours.map((tour, index) => {
+    const tour_id = tour._id;
     return (
       <tr key={tour._id}>
         <td><TourItem tour={tour} /></td>
@@ -18,6 +38,7 @@ const PageMyTours = (props) => {
             type="button"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={(e) => {_handleClickEditTour(tour_id) }}
           >Edit</Button>
           <Button
             type="button"
@@ -29,13 +50,6 @@ const PageMyTours = (props) => {
     );
   });
 
-  const handleClickAddTour = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'ADD_TOUR'
-    })
-  };
-
   return (
     <>
       <h1> My Tours </h1>
@@ -45,11 +59,11 @@ const PageMyTours = (props) => {
         </tbody>
       </table>
       <Button
-            type="button"
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onClick={handleClickAddTour}
-          >Add new tour</Button>
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleClickAddTour}
+      >Add new tour</Button>
     </>
   );
 };

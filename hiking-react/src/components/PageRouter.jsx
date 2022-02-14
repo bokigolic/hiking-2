@@ -26,6 +26,10 @@ const PageRouter = () => {
     jsx = (
       <FormTour />
     );
+  } else if (route === 'EDIT_TOUR') {
+    jsx = (
+      <FormTour modeEdit />
+    );
   } else if (route === 'ADD_REVIEW') {
     jsx = (
       <FormReview />

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,9 +9,19 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormLabel, Radio, RadioGroup, TextareaAutosize } from "@mui/material";
+import { getSingleTourById } from "../utils/tour-utils";
 
-const FormTour = () => {
+// Komponenta forma za ADD TOUR / EDIT TOUR
+
+const FormTour = (props) => {
   const theme = createTheme();
+
+  const routeParams = useSelector((state) => state.routeParams); // uzimamo routeParams iz redux statea
+  const tours = useSelector((state) => state.tours); // uzimamo routeParams iz redux statea
+
+  const tour_id = routeParams.tour_id;
+
+  const modeEdit = props.modeEdit;
 
   const preset = {
     name: '',
@@ -22,6 +33,12 @@ const FormTour = () => {
   };
 
   const [formState, setFormState] = useState(preset);
+
+  useEffect(()=>{
+    const editigTour = getSingleTourById(tour_id, tours);
+    setFormState(editigTour);
+  }, [tour_id, tours])
+
 
   const handleChange = (e) => {
     // univerzalni handler za sva inpout polja
@@ -57,13 +74,20 @@ const FormTour = () => {
     return test;
   };
 
-  const handleSubmit = (e)=> {
+  const handleSubmit = (e) => {
     // ovo je handle za onSubmit event forme
     e.preventDefault(); // ovo sprecava da browser automatski submituje
     if (validator(formState)) {
       // ako prodje validaciju forme
       console.log('submit...');
       console.log(formState);
+      if (modeEdit) {
+        // UPDATE
+        // ovde submit za editovanu turu
+      } else {
+        // CREATE
+        // ovde submit za novi turu
+      }
     } else {
       // ako ne prodje validaciju forme
       window.alert('Form validation error! :(')
@@ -84,7 +108,7 @@ const FormTour = () => {
           }}
         >
           <Typography component="h1" variant="h3">
-            Create tour
+            {modeEdit ? 'Edit tour' : 'Create tour'}
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -157,14 +181,26 @@ const FormTour = () => {
               autoFocus
             />
 
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Create
-            </Button>
+            {modeEdit ? (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Save changes
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
+                Create
+              </Button>
+            )
+            }
           </Box>
         </Box>
       </Container>
