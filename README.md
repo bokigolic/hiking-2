@@ -1,1 +1,1 @@
-# hiking-2
+# hiking_trails
