@@ -17,8 +17,9 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); // ova komanda zadaje da sve sto je u fodleru public bude na izvolte
 
+// ukoliko to sto je stiglo sa get request nije pronadjeno u static folderu onda pokusava da vidi da li se podudara sa zadatim rutama
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
@@ -38,6 +39,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-console.log('hiking-express backeckend READY!');
+console.log('***** hiking-express backeckend READY!');
 
 module.exports = app;
