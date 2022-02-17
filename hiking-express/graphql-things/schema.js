@@ -7,6 +7,7 @@ var schema = buildSchema(`
     hello: String
     random: Float!
     testContext(something: String): String
+    napraviGlupost: String
   }
 `);
 

@@ -1,5 +1,7 @@
-// GRAPPHQL RESOLVERS (u hraphql resolveri se zovu funkcije koje formiraju odgovore na pitanja)
+const Glupost = require('../models/glupost-model');
 
+
+// GRAPPHQL RESOLVERS (u hraphql resolveri se zovu funkcije koje formiraju odgovore na pitanja)
 var root = {
 
   hello: () => {
@@ -21,6 +23,18 @@ var root = {
     console.log(args);
     return 'We just tested arguments for resolver';
   },
+
+  napraviGlupost: async () => {
+    // proba uspisa necega u mongo bazu
+    const results = await Glupost.create({
+      nesto: 'blabla',
+      nesto2: 'cicaglisa'
+    });
+
+    console.log(results)
+
+    return 'Kreiranje glupost i mongo bazu uspelo!';
+  }
 
 };
 

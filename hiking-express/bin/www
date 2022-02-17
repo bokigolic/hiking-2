@@ -8,6 +8,10 @@ var app = require('../app');
 var debug = require('debug')('hiking-express:server');
 var http = require('http');
 
+const mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/hiking_db1', {});
+mongoose.connect('mongodb+srv://abcabcabc:abcabcabc@cluster0.rm5jl.mongodb.net/hiking_db1?retryWrites=true&w=majority', {});
+
 /**
  * Get port from environment and store in Express.
  */
