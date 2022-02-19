@@ -28,8 +28,8 @@ app.use(logger('dev'));
 
 // PARSERS
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(cookieParser());
 
 
 // STATIC
@@ -69,6 +69,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-console.log('***** hiking-express backeckend READY!');
+console.log('***** hiking-express backend READY!');
 
 module.exports = app;

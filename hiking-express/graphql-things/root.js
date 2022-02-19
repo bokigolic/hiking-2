@@ -34,6 +34,13 @@ var root = {
     console.log(results)
 
     return 'Kreiranje glupost i mongo bazu uspelo!';
+  },
+
+  authRegister: async (args, context) => {
+    console.log('autgRegister resolver')
+    console.log('args');
+    console.log(args);
+    return 'Vracamo neki odgovor od authRegister'
   }
 
 };
