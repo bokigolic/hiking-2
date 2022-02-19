@@ -1,4 +1,5 @@
 const Glupost = require('../models/glupost-model');
+const User = require('../models/user-model');
 
 
 // GRAPPHQL RESOLVERS (u hraphql resolveri se zovu funkcije koje formiraju odgovore na pitanja)
@@ -40,7 +41,18 @@ var root = {
     console.log('autgRegister resolver')
     console.log('args');
     console.log(args);
-    return 'Vracamo neki odgovor od authRegister'
+    // sad kad smo primili argumente sad imamo sve sto treba za upis u bazu
+    if (args.password === args.password2) {
+      // proba uspisa necega u mongo bazu
+      const results = await User.create({
+        username: args.username,
+        password: args.password
+      });
+      console.log(results); // rezultat koji vraca mongo baza
+      return 'Vracamo neki odgovor od authRegister'
+    } else {
+      return 'Error: registracija nije uspela password i password2 se razlikuju'
+    }
   }
 
 };
