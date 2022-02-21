@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ajax } from '../utils/ajax-adapter';
 
 const FormLogin = () => {
   const theme = createTheme();
@@ -55,6 +56,17 @@ const FormLogin = () => {
       // prosla validacije
       console.log('click submit...')
       console.log(formState)
+      ajax.authLogin(formState)
+        .then((response)=>{
+          // then je sledeci potez nakon neke async funkcije kad ona vrati nesto
+          // sto je async funkciji return to je ovoj then funkciji ulazn iargument
+          console.log(response);
+          if (response && response.data && response.data.data && response.data.data.authLogin ) {
+            const token = response.data.data.authLogin;
+            ajax.storeToken(token);
+          }
+        })
+
     } else {
       // pala validacija
       window.alert('Form validation error :(')
@@ -109,8 +121,8 @@ const FormLogin = () => {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox 
-                color="primary" 
+              control={<Checkbox
+                color="primary"
                 name="rememberme"
                 checked={formState.rememberme}
                 onChange={handleChange}

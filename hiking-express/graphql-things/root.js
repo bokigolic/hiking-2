@@ -1,5 +1,19 @@
+const jwt = require('jsonwebtoken');
 const Glupost = require('../models/glupost-model');
 const User = require('../models/user-model');
+
+
+// HELPERS
+
+const JWT_SECRET = 'NEKA_SUPER_TAJNA_STVAR';
+
+const tokenCreate = (user_id)=> {
+  const token = jwt.sign(
+    { user_id: user_id },
+    JWT_SECRET
+  );
+  return token;
+};
 
 
 // GRAPPHQL RESOLVERS (u hraphql resolveri se zovu funkcije koje formiraju odgovore na pitanja)
@@ -38,7 +52,7 @@ var root = {
   },
 
   authRegister: async (args, context) => {
-    console.log('autgRegister resolver')
+    console.log('authRegister resolver')
     console.log('args');
     console.log(args);
     // sad kad smo primili argumente sad imamo sve sto treba za upis u bazu
@@ -53,7 +67,30 @@ var root = {
     } else {
       return 'Error: registracija nije uspela password i password2 se razlikuju'
     }
-  }
+  },
+
+  authLogin: async (args, context) => {
+    console.log('authLogin resolver')
+    console.log('args');
+    console.log(args);
+
+    // najpre provera dali u bazu u tabeli users ima korisnik sa istim username i password
+    const results = await User.findOne({
+      username: args.username,
+      password: args.password
+    });
+    console.log(results); // ako ne pronadje korisnika onda je null
+    if (results && results._id) {
+      const user_id = results._id;
+      console.log('user_id', user_id);
+      const token = tokenCreate(user_id);
+      console.log('token', token);
+      // return token;
+      return token;
+    } else {
+      return 'Zao nam je ovo nije token. Korisnik sa tim username i password ne postoji :('
+    }
+  },
 
 };
 
