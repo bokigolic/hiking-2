@@ -1,13 +1,14 @@
 const jwt = require('jsonwebtoken');
 const Glupost = require('../models/glupost-model');
 const User = require('../models/user-model');
+const AuthSession = require('../models/auth-session-model');
 
 
 // HELPERS
 
 const JWT_SECRET = 'NEKA_SUPER_TAJNA_STVAR';
 
-const tokenCreate = (user_id)=> {
+const tokenCreate = (user_id) => {
   const token = jwt.sign(
     { user_id: user_id },
     JWT_SECRET
@@ -85,11 +86,36 @@ var root = {
       console.log('user_id', user_id);
       const token = tokenCreate(user_id);
       console.log('token', token);
+      // sad mora da upisemo token u sessions
+      await AuthSession.create({
+        user_id: user_id,
+        token: token
+      });
       // return token;
       return token;
     } else {
       return 'Zao nam je ovo nije token. Korisnik sa tim username i password ne postoji :('
     }
+  },
+
+  myUserData: async (args, context) => {
+    console.log('myUserData resolver')
+    console.log('args');
+    console.log(args);
+    const token = args.token;
+    console.log(token);
+    // sad kad smo dobili token mora da proverimo u bazi utabeli sessions da li ima taj token kao ulogovan
+    const session = await AuthSession.findOne({
+      token: token
+    });
+    console.log(session);
+    if (session.user_id) {
+      const user_id = results.user_id; // id korisnika koji je ulogovan
+      // jos jedan potez u bazi
+      // const user = // NASTAVITI OVDE DA SE UZME TAJ KORINIK IZ BAZE
+      // PA ZATIM DA SE PRIPREMI ODGOVOR ZA FRONTEND I POAALJE...
+    }
+
   },
 
 };

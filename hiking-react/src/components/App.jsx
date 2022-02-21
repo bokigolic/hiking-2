@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import FormLogin from './FormLogin';
-import FormRegister from './FormRegister';
 import PageRouter from './PageRouter';
+import { ajax } from '../utils/ajax-adapter';
 
 
 const App = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // ova funkcija ce biti pozvana samo jednom kad se ova komponenta mountuje
+    // a posto je ovo App komponenta koja se sam ojednom mountje i nikad ne dismountuje to je onda samo jednom za zivota apliakcija
+    // znaci ovo je idelano mesto da pozovemo inicijanu proceduru
+
+    // INIT
+    ajax.myUserData()
+
+  }, []);
 
   const handleClickHome = (e) => {
     dispatch({
@@ -74,7 +83,7 @@ const App = () => {
         </nav>
       </header>
       <div className="page-body">
-      <PageRouter />
+        <PageRouter />
       </div>
     </div>
   );
