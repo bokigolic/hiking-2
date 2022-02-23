@@ -58,6 +58,21 @@ const App = () => {
     })
   };
 
+  const handleClickLogout = (e) => {
+    ajax.authLogout()
+      .then(() => {
+        // ovo kada se obavi backend deo logout procedure
+        // logout korak 2) brisenje tokena
+        ajax.deleteStoredToken();
+        // logout korak 3) izmena u reduxu da smo izlogovani
+        dispatch({
+          type: 'LOGOUT'
+        });
+        // ovim je logout procedura kompletirana
+      })
+
+  };
+
   const handleClickAbout = (e) => {
     dispatch({
       type: 'ROUTE_SET',
@@ -86,11 +101,34 @@ const App = () => {
     })
   };
 
+
   let jsxLoggedInMessage = null;
+  let jsxMenu = null;
   if (isLoggedIn) {
+    // kada smo ulogovani
     jsxLoggedInMessage = (
       <>
         You are logged in <b>{myUserName}</b>
+      </>
+    );
+    jsxMenu = (
+      <>
+        <div onClick={handleClickHome}>Home</div>
+        <div onClick={handleClickLogout}>Logout</div>
+        <div onClick={handleClickMyTours}>My Tours</div>
+        <div onClick={handleClickAddTour}>Add tour</div>
+        <div onClick={handleClickAddReview}>Add review</div>
+        <div onClick={handleClickAbout}>About...</div>
+      </>
+    );
+  } else {
+    // kada smo izlogvani
+    jsxMenu = (
+      <>
+        <div onClick={handleClickHome}>Home</div>
+        <div onClick={handleClickRegister}>Register</div>
+        <div onClick={handleClickLogin}>Login</div>
+        <div onClick={handleClickAbout}>About...</div>
       </>
     );
   }
@@ -102,13 +140,8 @@ const App = () => {
           Hiking trails
         </p>
         <nav>
-          <div onClick={handleClickHome}>Home</div>
-          <div onClick={handleClickRegister}>Register</div>
-          <div onClick={handleClickLogin}>Login</div>
-          <div onClick={handleClickMyTours}>My Tours</div>
-          <div onClick={handleClickAddTour}>Add tour</div>
-          <div onClick={handleClickAddReview}>Add review</div>
-          <div onClick={handleClickAbout}>About...</div>
+
+          {jsxMenu}
         </nav>
       </header>
       <div className="page-body">

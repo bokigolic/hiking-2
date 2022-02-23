@@ -98,6 +98,19 @@ var root = {
     }
   },
 
+  authLogout: async (args, context) => {
+    console.log('authLogout resolver')
+    console.log('args');
+    console.log(args);
+    const token = args.token;
+    console.log(token);
+    // mora iz baze sesija da obrise onu sa ovim tokenom
+    await AuthSession.findOneAndDelete({
+      token: token
+    });
+    return true; // izlogvan ismo
+  },
+
   myUserData: async (args, context) => {
     console.log('myUserData resolver')
     console.log('args');
