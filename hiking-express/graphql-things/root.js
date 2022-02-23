@@ -118,11 +118,15 @@ var root = {
         _id: user_id,
       });
       console.log(user);
+      if (user && user._id && user.username) {
+        // uspesno pronadjen ulogovan ikorisnik
+        return {
+          _id: user._id,
+          is_success: true,
+          username: user.username,
+        };
+      }
 
-      return {
-        _id: user._id,
-        username: user.username,
-      };
     }
 
   },

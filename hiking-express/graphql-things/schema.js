@@ -5,7 +5,8 @@ var { buildSchema } = require('graphql');
 var schema = buildSchema(`
   type User {
     _id: String
-    username: String,
+    is_success: Boolean
+    username: String
   }
 
   type Query {

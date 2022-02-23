@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PageRouter from './PageRouter';
 import { ajax } from '../utils/ajax-adapter';
 
@@ -7,13 +7,33 @@ import { ajax } from '../utils/ajax-adapter';
 const App = () => {
   const dispatch = useDispatch();
 
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const myUserName = useSelector(state => state.myUserName);
+
   useEffect(() => {
     // ova funkcija ce biti pozvana samo jednom kad se ova komponenta mountuje
     // a posto je ovo App komponenta koja se sam ojednom mountje i nikad ne dismountuje to je onda samo jednom za zivota apliakcija
     // znaci ovo je idelano mesto da pozovemo inicijanu proceduru
 
     // INIT
+    console.log('test 1')
     ajax.myUserData()
+      .then((response) => {
+        console.log('test 2')
+        console.log('.then() response za myuserData primljen', response)
+        if (response && response.data && response.data.data && response.data.data.myUserData && response.data.data.myUserData._id) {
+          // PROEVERNO JE SUCCES RESPONSE
+          console.log(response.data.data.myUserData)
+          const myUserData = response.data.data.myUserData;
+          dispatch({
+            // type: 'MY_USER_DATA_FETCHED',
+            type: 'LOGIN_SUCCESS',
+            payload: myUserData
+          });
+        }
+      })
+
+    console.log('test 3')
 
   }, []);
 
@@ -66,6 +86,15 @@ const App = () => {
     })
   };
 
+  let jsxLoggedInMessage = null;
+  if (isLoggedIn) {
+    jsxLoggedInMessage = (
+      <>
+        You are logged in <b>{myUserName}</b>
+      </>
+    );
+  }
+
   return (
     <div className="App">
       <header className="App-header">
@@ -83,6 +112,7 @@ const App = () => {
         </nav>
       </header>
       <div className="page-body">
+        <p>{jsxLoggedInMessage}</p>
         <PageRouter />
       </div>
     </div>
