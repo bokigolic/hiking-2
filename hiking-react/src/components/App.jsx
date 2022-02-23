@@ -17,6 +17,7 @@ const App = () => {
 
     // INIT
     console.log('test 1')
+    // AUTOLOGIN PROCEDURA
     ajax.myUserData()
       .then((response) => {
         console.log('test 2')

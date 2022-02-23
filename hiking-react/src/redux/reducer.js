@@ -33,7 +33,9 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         isLoggedIn: true,
         myUserName: action.payload.username,
-        myUserId: action.payload._id
+        myUserId: action.payload._id,
+        route: 'HOME', // nakon login takodje redirektujemo na pocetnu stranu
+        routeParams: {}
       };
 
     case 'LOGOUT':

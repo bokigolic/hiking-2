@@ -13,8 +13,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ajax } from '../utils/ajax-adapter';
+import { useDispatch } from 'react-redux';
 
 const FormLogin = () => {
+  const dispatch = useDispatch();
   const theme = createTheme();
 
   const preset = {
@@ -56,6 +58,7 @@ const FormLogin = () => {
       // prosla validacije
       console.log('click submit...')
       console.log(formState)
+      // FORM LOGIN PROCEDURA
       ajax.authLogin(formState)
         .then((response)=>{
           // then je sledeci potez nakon neke async funkcije kad ona vrati nesto
@@ -64,6 +67,23 @@ const FormLogin = () => {
           if (response && response.data && response.data.data && response.data.data.authLogin ) {
             const token = response.data.data.authLogin;
             ajax.storeToken(token);
+            // FORM LOGIN PROCEDURA ZAVRSENA
+            // AUTOLOGIN PROCEDURA
+            ajax.myUserData()
+            .then((response) => {
+              console.log('test 2')
+              console.log('.then() response za myuserData primljen', response)
+              if (response && response.data && response.data.data && response.data.data.myUserData && response.data.data.myUserData._id) {
+                // PROEVERNO JE SUCCES RESPONSE
+                console.log(response.data.data.myUserData)
+                const myUserData = response.data.data.myUserData;
+                dispatch({
+                  // type: 'MY_USER_DATA_FETCHED',
+                  type: 'LOGIN_SUCCESS',
+                  payload: myUserData
+                });
+              }
+            })
           }
         })
 
