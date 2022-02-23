@@ -110,10 +110,19 @@ var root = {
     });
     console.log(session);
     if (session.user_id) {
-      const user_id = results.user_id; // id korisnika koji je ulogovan
+      const user_id = session.user_id; // id korisnika koji je ulogovan
       // jos jedan potez u bazi
       // const user = // NASTAVITI OVDE DA SE UZME TAJ KORINIK IZ BAZE
       // PA ZATIM DA SE PRIPREMI ODGOVOR ZA FRONTEND I POAALJE...
+      const user = await User.findOne({
+        _id: user_id,
+      });
+      console.log(user);
+
+      return {
+        _id: user._id,
+        username: user.username,
+      };
     }
 
   },
