@@ -80,10 +80,15 @@ ajax.authLogin = async (formData) => {
 ajax.authLogout = async () => {
   // slanje requeta za registraciju novog korisnika
 
-  const token = ajax.getStoredToken(); // uzimamo prethodno sacuvan token sa hard diska
+  // const token = ajax.getStoredToken(); // uzimamo prethodno sacuvan token sa hard diska
   // GRAPHQL
+  /*
   const graphql_query = {
     query: '{ authLogout( token: "' + token + '") }'
+  };
+  */
+  const graphql_query = {
+    query: '{ authLogout }'
   };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
   const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {

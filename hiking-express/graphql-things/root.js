@@ -16,6 +16,27 @@ const tokenCreate = (user_id) => {
   return token;
 };
 
+const checkIsLoggedIn = async (token) => {
+  // If context is not provided, the request object is passed as the context.
+  console.log('checkIsLoggedIn helper');
+  console.log(token);
+  let is_logged_in = false;
+  let user_id = null;
+  // sad kad smo dobili token mora da proverimo u bazi utabeli sessions da li ima taj token kao ulogovan
+  const session = await AuthSession.findOne({
+    token: token
+  });
+  console.log(session);
+  if (session.user_id) {
+    user_id = session.user_id; // id korisnika koji je ulogovan
+    is_logged_in = true;
+  }
+  return {
+    is_logged_in,
+    user_id
+  };
+}
+
 
 // GRAPPHQL RESOLVERS (u hraphql resolveri se zovu funkcije koje formiraju odgovore na pitanja)
 var root = {
@@ -70,6 +91,7 @@ var root = {
     }
   },
 
+
   authLogin: async (args, context) => {
     console.log('authLogin resolver')
     console.log('args');
@@ -98,11 +120,17 @@ var root = {
     }
   },
 
+
   authLogout: async (args, context) => {
+    // If context is not provided, the request object is passed as the context.
     console.log('authLogout resolver')
-    console.log('args');
-    console.log(args);
-    const token = args.token;
+    // console.log('args');
+    // console.log(args);
+    // const token = args.token;
+    // console.log(token);
+    const req = context;
+    const token = req.headers['x-hiking-token'];
+    // const token = args.token;
     console.log(token);
     // mora iz baze sesija da obrise onu sa ovim tokenom
     await AuthSession.findOneAndDelete({
@@ -110,6 +138,7 @@ var root = {
     });
     return true; // izlogvan ismo
   },
+
 
   myUserData: async (args, context) => {
     // If context is not provided, the request object is passed as the context.
@@ -124,12 +153,15 @@ var root = {
     // const token = args.token;
     console.log(token);
     // sad kad smo dobili token mora da proverimo u bazi utabeli sessions da li ima taj token kao ulogovan
+    /*
     const session = await AuthSession.findOne({
       token: token
     });
     console.log(session);
-    if (session.user_id) {
-      const user_id = session.user_id; // id korisnika koji je ulogovan
+    */
+    const auth = await checkIsLoggedIn(token); // zovemo helper daproveri da li je sa tim tokenom korinik ulogovan i koji je to korisnik
+    if (auth.is_logged_in) {
+      const user_id = auth.user_id; // id korisnika koji je ulogovan
       // jos jedan potez u bazi
       // const user = // NASTAVITI OVDE DA SE UZME TAJ KORINIK IZ BAZE
       // PA ZATIM DA SE PRIPREMI ODGOVOR ZA FRONTEND I POAALJE...
