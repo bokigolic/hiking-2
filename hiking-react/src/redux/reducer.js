@@ -7,7 +7,8 @@ const initialState = {
   isLoggedIn: false,
   myUserName: '',
   myUserId: '',
-  tours: dummyTours,
+  // tours: dummyTours,
+  tours: [],
   reviews: dummyReviews,
 };
 
@@ -46,6 +47,12 @@ const rootReducer = (state = initialState, action) => {
         myUserId: '',
         route: 'HOME', // nakon logout takodje redirektujemo na pocetnu stranu
         routeParams: {}
+      };
+
+    case 'TOURS_FETCHED':
+      return {
+        ...state,
+        tours: action.payload
       };
 
     default:

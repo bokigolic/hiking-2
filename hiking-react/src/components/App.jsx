@@ -38,6 +38,23 @@ const App = () => {
 
   }, []);
 
+
+  useEffect(() => {
+    // trazimo podatke od svih tura
+    ajax.tourGetAll()
+      .then((response) => {
+        console.log('response za tourGetAll');
+        console.log(response);
+        if (response && response.data && response.data.data && Array.isArray(response.data.data.tourGetAll)) {
+          dispatch({
+            type: 'TOURS_FETCHED',
+            payload: response.data.data.tourGetAll
+          });
+        }
+      })
+
+  }, []);
+
   const handleClickHome = (e) => {
     dispatch({
       type: 'ROUTE_SET',

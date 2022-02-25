@@ -146,6 +146,35 @@ ajax.tourCreate = async (formData) => {
 };
 
 
+ajax.tourGetAll = async () => {
+  // slanje requeta za dobijanje svih tura sa backenda
+
+  // GRAPHQL
+  /*
+  const graphql_query = {
+    query: '{ tourGetAll { _id name description date difficulty trail_length max_participants user_created date_created } }'
+  };
+  */
+  const graphql_query = {
+    query: '{ tourGetAll { _id name description date difficulty trail_length max_participants user_id } }'
+  };
+  /*
+  name: '',
+  description: '',
+  date: '02/09/2022',
+  difficulty: 'EASY',
+  trail_length: 1,
+  max_participants: 99
+  */
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za tourGetAll stigao:', response);
+  return response;
+};
+
+
 
 
 

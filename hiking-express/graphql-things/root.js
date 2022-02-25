@@ -213,6 +213,13 @@ var root = {
   },
 
 
+  tourGetAll: async (args, context) => {
+    console.log('tourGetAll resolver');
+    const results = await Tour.find({}); // cita iz baze sve iz tabele tour
+    return results;
+  },
+
+
 };
 
 module.exports = root;
