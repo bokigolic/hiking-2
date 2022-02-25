@@ -18,6 +18,7 @@ var schema = buildSchema(`
     authLogin(username: String, password: String): String
     authLogout: Boolean
     myUserData: User
+    tourCreate(name: String, description: String, date: String, difficulty: String, trail_length: Int, max_participants: Int): Boolean
   }
 `);
 
