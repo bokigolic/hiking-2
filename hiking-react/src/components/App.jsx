@@ -64,7 +64,8 @@ const App = () => {
       .then(() => {
         // ovo kada se obavi backend deo logout procedure
         // logout korak 2) brisenje tokena
-        ajax.deleteStoredToken();
+        ajax.deleteStoredToken(); // brisemo token sa hard diska
+        ajax.configureHeaders(null); // brisemo token iz ajax headera
         // logout korak 3) izmena u reduxu da smo izlogovani
         dispatch({
           type: 'LOGOUT'

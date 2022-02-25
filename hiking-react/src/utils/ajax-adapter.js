@@ -21,6 +21,26 @@ ajax.deleteStoredToken = () => {
 };
 
 
+ajax.preparedHeadersForAxios = {
+  'Content-Type': 'application/json'
+};
+
+ajax.configureHeaders = (token) => {
+  if (token === null) {
+    // kad smo izlogovani
+    ajax.preparedHeadersForAxios = {
+      'Content-Type': 'application/json'
+    };
+  } else {
+    // kad treba da budemo ulogovani i stalno saljemo token
+    ajax.preparedHeadersForAxios = {
+      'Content-Type': 'application/json',
+      'x-hiking-token': token
+    };
+  }
+};
+
+
 ajax.authRegister = async (formData) => {
   // slanje requeta za registraciju novog korisnika
 
@@ -67,9 +87,7 @@ ajax.authLogout = async () => {
   };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
   const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za authLogout stigao:', response);
   return response;
@@ -80,15 +98,19 @@ ajax.myUserData = async () => {
   // slanje requeta za registraciju novog korisnika
 
   const token = ajax.getStoredToken(); // uzimamo prethodno sacuvan token sa hard diska
+  ajax.configureHeaders(token); // podesavamo axios da svi buducei pozivi salju toke nkao http header
   // GRAPHQL
+  /*
   const graphql_query = {
     query: '{ myUserData( token: "' + token + '") { is_success _id username } }'
   };
+  */
+  const graphql_query = {
+    query: '{ myUserData { is_success _id username } }'
+  };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
   const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
+    headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za myUserData stigao:', response);
   return response;

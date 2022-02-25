@@ -112,10 +112,16 @@ var root = {
   },
 
   myUserData: async (args, context) => {
-    console.log('myUserData resolver')
+    // If context is not provided, the request object is passed as the context.
+    console.log('myUserData resolver');
     console.log('args');
     console.log(args);
-    const token = args.token;
+    // console.log('context');
+    // console.log(context);
+    const req = context;
+    // console.log(req.headers); 
+    const token = req.headers['x-hiking-token'];
+    // const token = args.token;
     console.log(token);
     // sad kad smo dobili token mora da proverimo u bazi utabeli sessions da li ima taj token kao ulogovan
     const session = await AuthSession.findOne({

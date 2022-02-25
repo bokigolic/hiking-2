@@ -66,7 +66,8 @@ const FormLogin = () => {
           console.log(response);
           if (response && response.data && response.data.data && response.data.data.authLogin ) {
             const token = response.data.data.authLogin;
-            ajax.storeToken(token);
+            ajax.storeToken(token); // cuvamo token na hard disk
+            ajax.configureHeaders(token); // podesavamo axios da svi buducei pozivi salju toke nkao http header
             // FORM LOGIN PROCEDURA ZAVRSENA
             // AUTOLOGIN PROCEDURA
             ajax.myUserData()
