@@ -31,6 +31,7 @@ var schema = buildSchema(`
     myUserData: User
     tourCreate(name: String, description: String, date: String, difficulty: String, trail_length: Int, max_participants: Int): Boolean
     tourGetAll: [Tour]
+    reviewCreate(rating: Int, text: String, tour_id: String): Boolean
   }
 `);
 

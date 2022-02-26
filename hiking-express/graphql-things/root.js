@@ -3,6 +3,7 @@ const Glupost = require('../models/glupost-model');
 const User = require('../models/user-model');
 const AuthSession = require('../models/auth-session-model');
 const Tour = require('../models/tour-model');
+const Review = require('../models/review-model');
 
 
 // HELPERS
@@ -217,6 +218,34 @@ var root = {
     console.log('tourGetAll resolver');
     const results = await Tour.find({}); // cita iz baze sve iz tabele tour
     return results;
+  },
+
+
+  reviewCreate: async (args, context) => {
+    console.log('reviewCreate resolver');
+    // If context is not provided, the request object is passed as the context.
+    console.log('args');
+    console.log(args);
+    const req = context;
+    const token = req.headers['x-hiking-token'];
+    console.log(token);
+    const auth = await checkIsLoggedIn(token);
+    if (auth.is_logged_in) {
+      // ulogovani smo, sad mozemo da kreiramo turu
+      const user_id = auth.user_id;
+      // sad u bazi kreiramo turu
+      const results = await Review.create({
+        user_id: user_id,
+        tour_id: args.tour_id,
+        rating: args.rating,
+        text: args.text
+      });
+      console.log(results);
+      return true;
+    } else {
+      // ako nismo ulogvani necemo ni da kreiramo turu
+      return false;
+    }
   },
 
 

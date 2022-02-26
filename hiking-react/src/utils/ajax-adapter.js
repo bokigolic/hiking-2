@@ -175,6 +175,27 @@ ajax.tourGetAll = async () => {
 };
 
 
+ajax.reviewCreate = async (formData) => {
+  // slanje requeta za kreiranje novog review
+
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ reviewCreate( rating: ' + formData.rating + ' text: "' + formData.text + '" tour_id: "' + formData.tour_id + '" ) }'
+  };
+  /*
+  rating: 0,
+  text: '',
+  tour_id: tour_id,
+  */
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za reviewCreate stigao:', response);
+  return response;
+};
+
+
 
 
 

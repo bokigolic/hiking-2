@@ -64,7 +64,6 @@ const rootReducer = (state = initialState, action) => {
           data: [],
           fetching: true
         }
-
       };
     case 'TOURS_FETCHED':
       return {
@@ -73,7 +72,6 @@ const rootReducer = (state = initialState, action) => {
           data: action.payload,
           fetching: false
         }
-
       };
     case 'TOURS_FAIL':
       return {
@@ -82,7 +80,6 @@ const rootReducer = (state = initialState, action) => {
           data: [],
           fetching: false
         }
-
       };
 
     default:

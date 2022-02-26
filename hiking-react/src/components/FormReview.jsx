@@ -8,9 +8,12 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormLabel, Radio, RadioGroup, Rating, TextareaAutosize } from "@mui/material";
+import { ajax } from "../utils/ajax-adapter";
 
-const FormReview = () => {
+const FormReview = (props) => {
   const theme = createTheme();
+
+  const tour_id = props.tour_id;
 
   const preset = {
     rating: 0,
@@ -54,10 +57,16 @@ const FormReview = () => {
       console.log(formState);
       const submitData = {
         ...formState,
-        rating: parseInt(formState.rating),
-        tour_id: '4', // dummy
+        rating: parseInt(formState.rating), // pretvaramo rating iz slova u broj
+        tour_id: tour_id,
+        // user_id: '???' // user_id ne saljemo ovde jer ce on svakako doci do backenda sa tokenom
       }; // podaci korigovani da bi rating bio number a ne string
       console.log(submitData);
+      ajax.reviewCreate(submitData)
+        .then((response) => {
+          console.log('response za create rewie stigao', response);
+        })
+        
     } else {
       // ako ne prodje validaciju forme
       window.alert('Form validation error! :(')
@@ -76,7 +85,7 @@ const FormReview = () => {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h3">
+          <Typography component="h2" variant="h5">
             Write review
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
