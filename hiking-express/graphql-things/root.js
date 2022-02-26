@@ -216,6 +216,7 @@ var root = {
 
   tourGetAll: async (args, context) => {
     console.log('tourGetAll resolver');
+    // NAPOMENA obo je PUBLIC API i ne proveravamo token
     const results = await Tour.find({}); // cita iz baze sve iz tabele tour
     return results;
   },
@@ -246,6 +247,14 @@ var root = {
       // ako nismo ulogvani necemo ni da kreiramo turu
       return false;
     }
+  },
+
+
+  reviewGetAll: async (args, context) => {
+    console.log('reviewGetAll resolver');
+    // NAPOMENA obo je PUBLIC API i ne proveravamo token
+    const results = await Review.find({}); // cita iz baze sve iz tabele review
+    return results;
   },
 
 

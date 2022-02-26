@@ -52,7 +52,7 @@ const App = () => {
           console.log('response za tourGetAll');
           console.log(response);
           if (response && response.data && response.data.data && Array.isArray(response.data.data.tourGetAll)) {
-            // KORAK kada se fetchovanej zavrsi
+            // KORAK kada se fetchovanje zavrsi
             dispatch({
               type: 'TOURS_FETCHED',
               payload: response.data.data.tourGetAll
@@ -60,6 +60,23 @@ const App = () => {
           }
         })
     }, 500)
+    // tajkodje fetchujemo i reviews
+    // KORAK 1) pre fetchovanja postavljam ospinner
+    dispatch({
+      type: 'REVIEW_FETCHING'
+    });
+    ajax.reviewGetAll()
+      .then((response) => {
+        console.log('response za reviewGetAll');
+        console.log(response);
+        if (response && response.data && response.data.data && Array.isArray(response.data.data.reviewGetAll)) {
+          // KORAK kada se fetchovanje zavrsi
+          dispatch({
+            type: 'REVIEWS_FETCHED',
+            payload: response.data.data.reviewGetAll
+          });
+        }
+      })
 
   }, []);
 

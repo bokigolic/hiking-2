@@ -51,7 +51,7 @@ const PageSingleTour = (props) => {
       <div>Date: {tour.date}</div>
       <div>Trail length: {tour.trail_length}</div>
       <div>Difficulty: {tour.difficulty}</div>
-      <div>Myx. number of participants: {tour.max_participants}</div>
+      <div>Max. number of participants: {tour.max_participants}</div>
       <div>Average rating: {averageRating}</div>
       <Typography component="legend">Average rating</Typography>
       <Rating
