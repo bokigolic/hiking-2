@@ -41,17 +41,25 @@ const App = () => {
 
   useEffect(() => {
     // trazimo podatke od svih tura
-    ajax.tourGetAll()
-      .then((response) => {
-        console.log('response za tourGetAll');
-        console.log(response);
-        if (response && response.data && response.data.data && Array.isArray(response.data.data.tourGetAll)) {
-          dispatch({
-            type: 'TOURS_FETCHED',
-            payload: response.data.data.tourGetAll
-          });
-        }
-      })
+    // KORAK 1) pre fetchovanja postavljam ospinner
+    dispatch({
+      type: 'TOURS_FETCHING'
+    });
+    setTimeout(() => {
+      // strpal iso u setTimeout da bi nam usporilo da bi videli spinner
+      ajax.tourGetAll()
+        .then((response) => {
+          console.log('response za tourGetAll');
+          console.log(response);
+          if (response && response.data && response.data.data && Array.isArray(response.data.data.tourGetAll)) {
+            // KORAK kada se fetchovanej zavrsi
+            dispatch({
+              type: 'TOURS_FETCHED',
+              payload: response.data.data.tourGetAll
+            });
+          }
+        })
+    }, 500)
 
   }, []);
 

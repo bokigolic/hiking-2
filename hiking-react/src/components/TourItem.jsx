@@ -9,7 +9,7 @@ const TourItem = (props) => {
   const reviews = useSelector(state => state.reviews);
   const tour_id = tour._id;
 
-  let averageRating = calculateAverageRating(reviews, tour_id);
+  let averageRating = calculateAverageRating(reviews.data, tour_id);
 
   const handleClickSingleTour = (e) => {
     dispatch({

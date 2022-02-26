@@ -17,9 +17,9 @@ const PageSingleTour = (props) => {
     setTour(tour);
   }, [tour_id, tours]);
 
-  let averageRating = calculateAverageRating(reviews, tour_id);
+  let averageRating = calculateAverageRating(reviews.data, tour_id);
 
-  const filteredReviews = reviews.filter((review) => {
+  const filteredReviews = reviews.data.filter((review) => {
     if (review.tour_id === tour_id) {
       // to je review od ove ture
       return true; // otsaje unizu

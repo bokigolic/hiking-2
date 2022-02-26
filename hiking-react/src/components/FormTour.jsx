@@ -37,7 +37,7 @@ const FormTour = (props) => {
   useEffect(() => {
     // pokrece se samo kad primi podatke tour_id i tours
     // Svrha je prakticno u tome da limitira kada se poziva setState jer react reaguje na njega i kad ne bi limitirali u beskonanost bi bil iscrtavana komponenta
-    const editigTour = getSingleTourById(tour_id, tours);
+    const editigTour = getSingleTourById(tour_id, tours.data);
     if (editigTour !== null) {
       setFormState(editigTour);
     }
@@ -94,7 +94,7 @@ const FormTour = (props) => {
           .then((response) => {
             console.log(response);
           })
-          
+
       }
     } else {
       // ako ne prodje validaciju forme

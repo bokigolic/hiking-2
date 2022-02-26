@@ -1,6 +1,7 @@
 import { Box, Button, Container, CssBaseline, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
+import Spinner from "./Spinner";
 import TourItem from "./TourItem";
 
 const PageMyTours = (props) => {
@@ -26,7 +27,14 @@ const PageMyTours = (props) => {
     })
   };
 
-  const myTours = tours; // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
+  const myTours = tours.data; // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
+
+  let jsxSpinner = null;
+  if (tours.fetching) {
+    jsxSpinner = (
+      <Spinner />
+    );
+  }
 
   let jsx = myTours.map((tour, index) => {
     const tour_id = tour._id;
@@ -38,7 +46,7 @@ const PageMyTours = (props) => {
             type="button"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            onClick={(e) => {_handleClickEditTour(tour_id) }}
+            onClick={(e) => { _handleClickEditTour(tour_id) }}
           >Edit</Button>
           <Button
             type="button"
@@ -55,6 +63,7 @@ const PageMyTours = (props) => {
       <h1> My Tours </h1>
       <table className="my-tours">
         <tbody>
+          {jsxSpinner}
           {jsx}
         </tbody>
       </table>
