@@ -1,22 +1,25 @@
-// SVI AJAX REQUESTOVI, PODESAVNJADA SALJE TOKEN SA SVAKI MREQUESTOM itd...
-
+import config from "./config";
+import { urlLib } from "./url-lib";
 import axios from "axios";
 import { convert_to_json } from "./ajax-utils";
+
+
+// SVI AJAX REQUESTOVI, PODESAVNJADA SALJE TOKEN SA SVAKI MREQUESTOM itd...
 
 export const ajax = {};
 
 
 ajax.storeToken = (token) => {
-  window.localStorage.setItem('hiking_token', token);
+  window.localStorage.setItem(config.TOKEN_LOCALSTOARGE_KEY, token);
 };
 
 ajax.getStoredToken = () => {
-  const token = window.localStorage.getItem('hiking_token');
+  const token = window.localStorage.getItem(config.TOKEN_LOCALSTOARGE_KEY);
   return token;
 };
 
 ajax.deleteStoredToken = () => {
-  const token = window.localStorage.removeItem('hiking_token');
+  const token = window.localStorage.removeItem(config.TOKEN_LOCALSTOARGE_KEY);
   return token;
 };
 
@@ -35,7 +38,8 @@ ajax.configureHeaders = (token) => {
     // kad treba da budemo ulogovani i stalno saljemo token
     ajax.preparedHeadersForAxios = {
       'Content-Type': 'application/json',
-      'x-hiking-token': token
+      // 'x-hiking-token': token
+      [config.TOKEN_HEADER_KEY]: token
     };
   }
 };
@@ -49,7 +53,7 @@ ajax.authRegister = async (formData) => {
     query: '{ authRegister( username: "' + formData.username + '" password: "' + formData.password + '" password2: "' + formData.password2 + '") }'
   };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -67,7 +71,7 @@ ajax.authLogin = async (formData) => {
     query: '{ authLogin( username: "' + formData.username + '" password: "' + formData.password + '") }'
   };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: {
       'Content-Type': 'application/json'
     }
@@ -91,7 +95,7 @@ ajax.authLogout = async () => {
     query: '{ authLogout }'
   };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za authLogout stigao:', response);
@@ -114,7 +118,7 @@ ajax.myUserData = async () => {
     query: '{ myUserData { is_success _id username } }'
   };
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za myUserData stigao:', response);
@@ -138,7 +142,7 @@ ajax.tourCreate = async (formData) => {
   max_participants: 99
   */
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za tourCreate stigao:', response);
@@ -167,7 +171,7 @@ ajax.tourGetAll = async () => {
   max_participants: 99
   */
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za tourGetAll stigao:', response);
@@ -188,7 +192,7 @@ ajax.reviewCreate = async (formData) => {
   tour_id: tour_id,
   */
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za reviewCreate stigao:', response);
@@ -211,7 +215,7 @@ ajax.reviewGetAll = async () => {
     text: String
   */
   const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
-  const response = await axios.post('http://localhost:3001/api/v2/graphql', data_prepared, {
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
     headers: ajax.preparedHeadersForAxios
   });
   console.log('axios response za tourGetAll stigao:', response);
@@ -234,11 +238,11 @@ ajax.salji_post_request = () => {
 ajax.sacuvaj_token_lokalno_i_trajno = (token) => {
 
   // ako je u pitanju web broeser
-  // window.localStorage.setItem('hiking_token', token)
+  // window.localStorage.setItem(config.TOKEN_LOCALSTOARGE_KEY, token)
 
   // ako je u pitanju web browser cookie
 
   // ako je u pitanju android react-native aplikacije
-  // androidStorage('hiking_token', token)
+  // androidStorage(config.TOKEN_LOCALSTOARGE_KEY, token)
 
 };

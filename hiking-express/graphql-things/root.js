@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const config = require('../utils/config');
 const Glupost = require('../models/glupost-model');
 const User = require('../models/user-model');
 const AuthSession = require('../models/auth-session-model');
@@ -8,12 +9,13 @@ const Review = require('../models/review-model');
 
 // HELPERS
 
-const JWT_SECRET = 'NEKA_SUPER_TAJNA_STVAR';
+// const JWT_SECRET = 'NEKA_SUPER_TAJNA_STVAR'; // sad ga uzimamo iz config fajla
 
 const tokenCreate = (user_id) => {
+  // create jsonwebtoken token
   const token = jwt.sign(
     { user_id: user_id },
-    JWT_SECRET
+    config.JWT_SECRET
   );
   return token;
 };
@@ -131,7 +133,7 @@ var root = {
     // const token = args.token;
     // console.log(token);
     const req = context;
-    const token = req.headers['x-hiking-token'];
+    const token = req.headers[config.TOKEN_HEADER_KEY];
     // const token = args.token;
     console.log(token);
     // mora iz baze sesija da obrise onu sa ovim tokenom
@@ -151,7 +153,7 @@ var root = {
     // console.log(context);
     const req = context;
     // console.log(req.headers); 
-    const token = req.headers['x-hiking-token'];
+    const token = req.headers[config.TOKEN_HEADER_KEY];
     // const token = args.token;
     console.log(token);
     // sad kad smo dobili token mora da proverimo u bazi utabeli sessions da li ima taj token kao ulogovan
@@ -189,7 +191,7 @@ var root = {
     console.log('args');
     console.log(args);
     const req = context;
-    const token = req.headers['x-hiking-token'];
+    const token = req.headers[config.TOKEN_HEADER_KEY];
     console.log(token);
     const auth = await checkIsLoggedIn(token);
     if (auth.is_logged_in) {
@@ -228,7 +230,7 @@ var root = {
     console.log('args');
     console.log(args);
     const req = context;
-    const token = req.headers['x-hiking-token'];
+    const token = req.headers[config.TOKEN_HEADER_KEY];
     console.log(token);
     const auth = await checkIsLoggedIn(token);
     if (auth.is_logged_in) {
