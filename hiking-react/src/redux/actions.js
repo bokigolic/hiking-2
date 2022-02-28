@@ -1,0 +1,15 @@
+
+
+
+// ACTION TYPES konstante
+
+export const ROUTE_SET = 'ROUTE_SET';
+export const ROUTE_WITH_PARAMS_SET = 'ROUTE_WITH_PARAMS_SET';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGOUT = 'LOGOUT';
+export const TOURS_FETCHING = 'TOURS_FETCHING';
+export const TOURS_FETCHED = 'TOURS_FETCHED';
+export const TOURS_FAIL = 'TOURS_FAIL';
+export const REVIEWS_FETCHING = 'REVIEWS_FETCHING';
+export const REVIEWS_FETCHED = 'REVIEWS_FETCHED';
+export const REVIEWS_FAIL = 'REVIEWS_FAIL';

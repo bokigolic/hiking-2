@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PageRouter from './PageRouter';
 import { ajax } from '../utils/ajax-adapter';
+import { LOGIN_SUCCESS } from '../redux/actions';
 
 
 const App = () => {
@@ -28,7 +29,7 @@ const App = () => {
           const myUserData = response.data.data.myUserData;
           dispatch({
             // type: 'MY_USER_DATA_FETCHED',
-            type: 'LOGIN_SUCCESS',
+            type: LOGIN_SUCCESS,
             payload: myUserData
           });
         }

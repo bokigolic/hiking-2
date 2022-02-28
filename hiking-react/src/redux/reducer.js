@@ -1,5 +1,6 @@
 import { dummyReviews } from "../utils/dummy-reviews";
 import { dummyTours } from "../utils/dummy-tours";
+import { LOGIN_SUCCESS, LOGOUT, REVIEWS_FAIL, REVIEWS_FETCHED, REVIEWS_FETCHING, ROUTE_SET, ROUTE_WITH_PARAMS_SET, TOURS_FAIL, TOURS_FETCHED, TOURS_FETCHING } from "./actions";
 
 const initialState = {
   route: 'HOME',
@@ -23,21 +24,21 @@ const initialState = {
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
 
-    case 'ROUTE_SET':
+    case ROUTE_SET:
       return {
         ...state,
         route: action.payload,
         routeParams: {}
       };
 
-    case 'ROUTE_WITH_PARAMS_SET':
+    case ROUTE_WITH_PARAMS_SET:
       return {
         ...state,
         route: action.payload.route,
         routeParams: action.payload.params
       };
 
-    case 'LOGIN_SUCCESS':
+    case LOGIN_SUCCESS:
       return {
         ...state,
         isLoggedIn: true,
@@ -47,7 +48,7 @@ const rootReducer = (state = initialState, action) => {
         routeParams: {}
       };
 
-    case 'LOGOUT':
+    case LOGOUT:
       return {
         ...state,
         isLoggedIn: false,
@@ -57,7 +58,7 @@ const rootReducer = (state = initialState, action) => {
         routeParams: {}
       };
 
-    case 'TOURS_FETCHING':
+    case TOURS_FETCHING:
       return {
         ...state,
         tours: {
@@ -65,7 +66,7 @@ const rootReducer = (state = initialState, action) => {
           fetching: true
         }
       };
-    case 'TOURS_FETCHED':
+    case TOURS_FETCHED:
       return {
         ...state,
         tours: {
@@ -73,7 +74,7 @@ const rootReducer = (state = initialState, action) => {
           fetching: false
         }
       };
-    case 'TOURS_FAIL':
+    case TOURS_FAIL:
       return {
         ...state,
         tours: {
@@ -83,7 +84,7 @@ const rootReducer = (state = initialState, action) => {
       };
 
 
-    case 'REVIEWS_FETCHING':
+    case REVIEWS_FETCHING:
       return {
         ...state,
         reviews: {
@@ -91,7 +92,7 @@ const rootReducer = (state = initialState, action) => {
           fetching: true
         }
       };
-    case 'REVIEWS_FETCHED':
+    case REVIEWS_FETCHED:
       return {
         ...state,
         reviews: {
@@ -99,7 +100,7 @@ const rootReducer = (state = initialState, action) => {
           fetching: false
         }
       };
-    case 'REVIEWS_FAIL':
+    case REVIEWS_FAIL:
       return {
         ...state,
         reviews: {
