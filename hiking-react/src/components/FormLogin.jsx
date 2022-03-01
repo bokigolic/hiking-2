@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { actionAuthFormLogin } from '../redux/actions';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +14,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ajax } from '../utils/ajax-adapter';
-import { useDispatch } from 'react-redux';
 
 const FormLogin = () => {
   const dispatch = useDispatch();
@@ -58,36 +58,7 @@ const FormLogin = () => {
       // prosla validacije
       console.log('click submit...')
       console.log(formState)
-      // FORM LOGIN PROCEDURA
-      ajax.authLogin(formState)
-        .then((response)=>{
-          // then je sledeci potez nakon neke async funkcije kad ona vrati nesto
-          // sto je async funkciji return to je ovoj then funkciji ulazn iargument
-          console.log(response);
-          if (response && response.data && response.data.data && response.data.data.authLogin ) {
-            const token = response.data.data.authLogin;
-            ajax.storeToken(token); // cuvamo token na hard disk
-            ajax.configureHeaders(token); // podesavamo axios da svi buducei pozivi salju toke nkao http header
-            // FORM LOGIN PROCEDURA ZAVRSENA
-            // AUTOLOGIN PROCEDURA
-            ajax.myUserData()
-            .then((response) => {
-              console.log('test 2')
-              console.log('.then() response za myuserData primljen', response)
-              if (response && response.data && response.data.data && response.data.data.myUserData && response.data.data.myUserData._id) {
-                // PROEVERNO JE SUCCES RESPONSE
-                console.log(response.data.data.myUserData)
-                const myUserData = response.data.data.myUserData;
-                dispatch({
-                  // type: 'MY_USER_DATA_FETCHED',
-                  type: 'LOGIN_SUCCESS',
-                  payload: myUserData
-                });
-              }
-            })
-          }
-        })
-
+      dispatch(actionAuthFormLogin(formState)); // FORM LOGIN PROCEDURA
     } else {
       // pala validacija
       window.alert('Form validation error :(')

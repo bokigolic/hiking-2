@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { actionReviewCreate } from "../redux/actions";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -8,9 +10,9 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormLabel, Radio, RadioGroup, Rating, TextareaAutosize } from "@mui/material";
-import { ajax } from "../utils/ajax-adapter";
 
 const FormReview = (props) => {
+  const dispatch = useDispatch();
   const theme = createTheme();
 
   const tour_id = props.tour_id;
@@ -62,11 +64,8 @@ const FormReview = (props) => {
         // user_id: '???' // user_id ne saljemo ovde jer ce on svakako doci do backenda sa tokenom
       }; // podaci korigovani da bi rating bio number a ne string
       console.log(submitData);
-      ajax.reviewCreate(submitData)
-        .then((response) => {
-          console.log('response za create rewie stigao', response);
-        })
-        
+      dispatch(actionReviewCreate(submitData));
+
     } else {
       // ako ne prodje validaciju forme
       window.alert('Form validation error! :(')

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { actionTourCreate } from "../redux/actions";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -10,11 +11,11 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { FormLabel, Radio, RadioGroup, TextareaAutosize } from "@mui/material";
 import { getSingleTourById } from "../utils/tour-utils";
-import { ajax } from "../utils/ajax-adapter";
 
 // Komponenta forma za ADD TOUR / EDIT TOUR
 
 const FormTour = (props) => {
+  const dispatch = useDispatch();
   const theme = createTheme();
 
   const tours = useSelector((state) => state.tours); // uzimamo routeParams iz redux statea
@@ -89,12 +90,7 @@ const FormTour = (props) => {
         // ovde submit za editovanu turu
       } else {
         // CREATE
-        // ovde submit za novi turu
-        ajax.tourCreate(formState)
-          .then((response) => {
-            console.log(response);
-          })
-
+        dispatch(actionTourCreate(formState));
       }
     } else {
       // ako ne prodje validaciju forme

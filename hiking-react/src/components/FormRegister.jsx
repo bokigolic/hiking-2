@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { actionAuthRegister } from "../redux/actions";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,8 +10,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ajax } from "../utils/ajax-adapter";
-import { useDispatch } from "react-redux";
 
 const FormRegister = () => {
   const dispatch = useDispatch();
@@ -61,14 +61,7 @@ const FormRegister = () => {
       // prosla validacije
       console.log('click submit...')
       console.log(formState);
-      ajax.authRegister(formState)
-      .then(()=>{
-        dispatch({
-          type: 'ROUTE_SET',
-          payload: 'LOGIN'
-        })
-      })
-
+      dispatch(actionAuthRegister(formState));
     } else {
       // pala validacija
       window.alert('Form validation error :(')

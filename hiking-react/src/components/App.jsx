@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { actionAuthAutoLogin, actionAuthLogout,  actionReviewsNeeded, actionRouteSet, actionToursNeeded } from '../redux/actions';
 import PageRouter from './PageRouter';
-import { ajax } from '../utils/ajax-adapter';
-import { LOGIN_SUCCESS } from '../redux/actions';
 
 
 const App = () => {
@@ -17,133 +16,50 @@ const App = () => {
     // znaci ovo je idelano mesto da pozovemo inicijanu proceduru
 
     // INIT
-    console.log('test 1')
-    // AUTOLOGIN PROCEDURA
-    ajax.myUserData()
-      .then((response) => {
-        console.log('test 2')
-        console.log('.then() response za myuserData primljen', response)
-        if (response && response.data && response.data.data && response.data.data.myUserData && response.data.data.myUserData._id) {
-          // PROEVERNO JE SUCCES RESPONSE
-          console.log(response.data.data.myUserData)
-          const myUserData = response.data.data.myUserData;
-          dispatch({
-            // type: 'MY_USER_DATA_FETCHED',
-            type: LOGIN_SUCCESS,
-            payload: myUserData
-          });
-        }
-      })
-
-    console.log('test 3')
+    dispatch(actionAuthAutoLogin()); // AUTOLOGIN procedura
 
   }, []);
-
 
   useEffect(() => {
-    // trazimo podatke od svih tura
-    // KORAK 1) pre fetchovanja postavljam ospinner
-    dispatch({
-      type: 'TOURS_FETCHING'
-    });
-    setTimeout(() => {
-      // strpal iso u setTimeout da bi nam usporilo da bi videli spinner
-      ajax.tourGetAll()
-        .then((response) => {
-          console.log('response za tourGetAll');
-          console.log(response);
-          if (response && response.data && response.data.data && Array.isArray(response.data.data.tourGetAll)) {
-            // KORAK kada se fetchovanje zavrsi
-            dispatch({
-              type: 'TOURS_FETCHED',
-              payload: response.data.data.tourGetAll
-            });
-          }
-        })
-    }, 500)
-    // tajkodje fetchujemo i reviews
-    // KORAK 1) pre fetchovanja postavljam ospinner
-    dispatch({
-      type: 'REVIEW_FETCHING'
-    });
-    ajax.reviewGetAll()
-      .then((response) => {
-        console.log('response za reviewGetAll');
-        console.log(response);
-        if (response && response.data && response.data.data && Array.isArray(response.data.data.reviewGetAll)) {
-          // KORAK kada se fetchovanje zavrsi
-          dispatch({
-            type: 'REVIEWS_FETCHED',
-            payload: response.data.data.reviewGetAll
-          });
-        }
-      })
+
+    dispatch(actionToursNeeded());
+    dispatch(actionReviewsNeeded());
 
   }, []);
 
+
+  // HANDLERI ZA CLICKOVE NA OPCIJE
+
   const handleClickHome = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'HOME'
-    })
+    dispatch(actionRouteSet('HOME'));
   };
 
   const handleClickRegister = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'REGISTER'
-    })
+    dispatch(actionRouteSet('REGISTER'));
   };
-
+  
   const handleClickLogin = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'LOGIN'
-    })
+    dispatch(actionRouteSet('LOGIN'));
   };
-
+  
   const handleClickLogout = (e) => {
-    ajax.authLogout()
-      .then(() => {
-        // ovo kada se obavi backend deo logout procedure
-        // logout korak 2) brisenje tokena
-        ajax.deleteStoredToken(); // brisemo token sa hard diska
-        ajax.configureHeaders(null); // brisemo token iz ajax headera
-        // logout korak 3) izmena u reduxu da smo izlogovani
-        dispatch({
-          type: 'LOGOUT'
-        });
-        // ovim je logout procedura kompletirana
-      })
-
+    dispatch(actionAuthLogout());
   };
-
+  
   const handleClickAbout = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'ABOUT'
-    })
+    dispatch(actionRouteSet('ABOUT'));
   };
 
   const handleClickMyTours = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'MY_TOURS'
-    })
+    dispatch(actionRouteSet('MY_TOURS'));
   };
-
+  
   const handleClickAddTour = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'ADD_TOUR'
-    })
+    dispatch(actionRouteSet('ADD_TOUR'));
   };
-
+  
   const handleClickAddReview = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'ADD_REVIEW'
-    })
+    dispatch(actionRouteSet('ADD_REVIEW'));
   };
 
 
@@ -161,8 +77,6 @@ const App = () => {
         <div onClick={handleClickHome}>Home</div>
         <div onClick={handleClickLogout}>Logout</div>
         <div onClick={handleClickMyTours}>My Tours</div>
-        <div onClick={handleClickAddTour}>Add tour</div>
-        <div onClick={handleClickAddReview}>Add review</div>
         <div onClick={handleClickAbout}>About...</div>
       </>
     );

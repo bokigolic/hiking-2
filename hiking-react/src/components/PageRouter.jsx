@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import FormLogin from "./FormLogin";
 import FormRegister from "./FormRegister";
-import FormReview from "./FormReview";
+// import FormReview from "./FormReview";
 import FormTour from "./FormTour";
 import PageHome from "./PageHome";
 import PageMyTours from "./PageMyTours";

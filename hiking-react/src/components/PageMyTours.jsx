@@ -1,6 +1,7 @@
 import { Box, Button, Container, CssBaseline, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
+import { actionRouteSet, actionRouteWithParamsSet } from "../redux/actions";
 import Spinner from "./Spinner";
 import TourItem from "./TourItem";
 
@@ -9,22 +10,24 @@ const PageMyTours = (props) => {
   const tours = useSelector((state) => state.tours); // uzimamo podatak tours iz globalnog reducovog statea apliakcije
 
   const handleClickAddTour = (e) => {
-    dispatch({
-      type: 'ROUTE_SET',
-      payload: 'ADD_TOUR'
-    })
+    dispatch(actionRouteSet('ADD_TOUR'))
   };
 
   const _handleClickEditTour = (tour_id) => {
+    /*
     dispatch({
       type: 'ROUTE_WITH_PARAMS_SET',
       payload: {
-        route: 'EDIT_TOUR',
+        route: ,
         params: {
           tour_id: tour_id
         }
       }
-    })
+    });
+    */
+    dispatch(actionRouteWithParamsSet('EDIT_TOUR', {
+      tour_id: tour_id
+    }))
   };
 
   const myTours = tours.data; // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
