@@ -150,6 +150,31 @@ ajax.tourCreate = async (formData) => {
 };
 
 
+ajax.tourUpdate = async (formData) => {
+  // slanje requeta za update postojece ture
+
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ tourUpdate( name: "' + formData.name + '" description: "' + formData.description + '" date: "' + formData.date + '" difficulty: "' + formData.difficulty + '" trail_length: ' + formData.trail_length + ' max_participants: ' + formData.max_participants + ' tour_id: "' + formData.tour_id + '") }'
+  };
+  /*
+  tour_id: '879877965646'
+  name: '',
+  description: '',
+  date: '02/09/2022',
+  difficulty: 'EASY',
+  trail_length: 1,
+  max_participants: 99
+  */
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za tourUpdate stigao:', response);
+  return response;
+};
+
+
 ajax.tourGetAll = async () => {
   // slanje requeta za dobijanje svih tura sa backenda
 

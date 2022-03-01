@@ -38,6 +38,7 @@ var schema = buildSchema(`
     authLogout: Boolean
     myUserData: User
     tourCreate(name: String, description: String, date: String, difficulty: String, trail_length: Int, max_participants: Int): Boolean
+    tourUpdate(name: String, description: String, date: String, difficulty: String, trail_length: Int, max_participants: Int tour_id: String): Boolean
     tourGetAll: [Tour]
     reviewCreate(rating: Int, text: String, tour_id: String): Boolean
     reviewGetAll: [Review]

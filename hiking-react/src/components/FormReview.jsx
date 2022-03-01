@@ -57,14 +57,14 @@ const FormReview = (props) => {
       // ako prodje validaciju forme
       console.log('submit...');
       console.log(formState);
-      const submitData = {
+      const formState2 = {
         ...formState,
         rating: parseInt(formState.rating), // pretvaramo rating iz slova u broj
         tour_id: tour_id,
         // user_id: '???' // user_id ne saljemo ovde jer ce on svakako doci do backenda sa tokenom
       }; // podaci korigovani da bi rating bio number a ne string
-      console.log(submitData);
-      dispatch(actionReviewCreate(submitData));
+      console.log(formState2);
+      dispatch(actionReviewCreate(formState2));
 
     } else {
       // ako ne prodje validaciju forme

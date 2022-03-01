@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionTourCreate } from "../redux/actions";
+import { actionTourCreate, actionTourUpdate } from "../redux/actions";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -88,6 +88,11 @@ const FormTour = (props) => {
       if (modeEdit) {
         // UPDATE
         // ovde submit za editovanu turu
+        const formState2 = {
+          ...formState,
+          tour_id: tour_id
+        };
+        dispatch(actionTourUpdate(formState2));
       } else {
         // CREATE
         dispatch(actionTourCreate(formState));

@@ -216,6 +216,45 @@ var root = {
   },
 
 
+  tourUpdate: async (args, context) => {
+    console.log('tourUpdate resolver');
+    // If context is not provided, the request object is passed as the context.
+    console.log('args');
+    console.log(args);
+    const req = context;
+    const token = req.headers[config.TOKEN_HEADER_KEY];
+    console.log(token);
+    const auth = await checkIsLoggedIn(token);
+    if (auth.is_logged_in) {
+      // ulogovani smo, sad mozemo da kreiramo turu
+      const user_id = auth.user_id;
+      // sad u bazi kreiramo turu
+
+
+
+      
+      const results = await Tour.findOneAndUpdate({
+        tour_id: args.tour_id,
+        user_id: user_id
+      }, {
+        // user_id: user_id,
+        name: args.name,
+        description: args.description,
+        date: args.date,
+        difficulty: args.difficulty,
+        trail_length: args.trail_length,
+        max_participants: args.max_participants
+      });
+      
+      console.log(results);
+      return true;
+    } else {
+      // ako nismo ulogvani necemo ni da kreiramo turu
+      return false;
+    }
+  },
+
+
   tourGetAll: async (args, context) => {
     console.log('tourGetAll resolver');
     // NAPOMENA obo je PUBLIC API i ne proveravamo token
