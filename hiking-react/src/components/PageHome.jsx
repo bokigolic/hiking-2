@@ -1,10 +1,20 @@
 import { Box, Container, CssBaseline, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actionReviewsNeeded, actionToursNeeded } from "../redux/actions";
 import Spinner from "./Spinner";
 import TourItem from "./TourItem";
 
 const PageHome = (props) => {
+  const dispatch = useDispatch();
+  const routeFreshness = useSelector((state) => state.routeFreshness);
+
+  useEffect(() => {
+    // bice pozvan svaki put kad se routeFreshness promeni
+    dispatch(actionToursNeeded());
+    dispatch(actionReviewsNeeded());
+  }, [routeFreshness]);
+
 
   // SEKCIJA FILTER
   const preset = {

@@ -1,10 +1,11 @@
 import { dummyReviews } from "../utils/dummy-reviews";
 import { dummyTours } from "../utils/dummy-tours";
-import { LOGIN_SUCCESS, LOGOUT, REVIEWS_FAIL, REVIEWS_FETCHED, REVIEWS_FETCHING, ROUTE_SET, ROUTE_WITH_PARAMS_SET, TOURS_FAIL, TOURS_FETCHED, TOURS_FETCHING } from "./actions";
+import { LOGIN_SUCCESS, LOGOUT, REFRESH, REVIEWS_FAIL, REVIEWS_FETCHED, REVIEWS_FETCHING, ROUTE_SET, ROUTE_WITH_PARAMS_SET, TOURS_FAIL, TOURS_FETCHED, TOURS_FETCHING } from "./actions";
 
 const initialState = {
   route: 'HOME',
   routeParams: {},
+  routeFreshness: 0,
   isLoggedIn: false,
   myUserName: '',
   myUserId: '',
@@ -28,14 +29,22 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         route: action.payload,
-        routeParams: {}
+        routeParams: {},
+        routeFreshness: state.routeFreshness + 1
       };
 
     case ROUTE_WITH_PARAMS_SET:
       return {
         ...state,
         route: action.payload.route,
-        routeParams: action.payload.params
+        routeParams: action.payload.params,
+        routeFreshness: state.routeFreshness + 1
+      };
+
+    case REFRESH:
+      return {
+        ...state,
+        routeFreshness: state.routeFreshness + 1
       };
 
     case LOGIN_SUCCESS:

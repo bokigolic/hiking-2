@@ -1,30 +1,28 @@
 import { Box, Button, Container, CssBaseline, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
-
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionRouteSet, actionRouteWithParamsSet } from "../redux/actions";
+import { actionReviewsNeeded, actionRouteSet, actionRouteWithParamsSet, actionToursNeeded } from "../redux/actions";
 import Spinner from "./Spinner";
 import TourItem from "./TourItem";
+
 
 const PageMyTours = (props) => {
   const dispatch = useDispatch();
   const tours = useSelector((state) => state.tours); // uzimamo podatak tours iz globalnog reducovog statea apliakcije
+  const routeFreshness = useSelector((state) => state.routeFreshness);
+
+  useEffect(() => {
+    // bice pozvan svaki put kad se routeFreshness promeni
+    dispatch(actionToursNeeded());
+    dispatch(actionReviewsNeeded());
+  }, [routeFreshness]);
+
 
   const handleClickAddTour = (e) => {
     dispatch(actionRouteSet('ADD_TOUR'))
   };
 
   const _handleClickEditTour = (tour_id) => {
-    /*
-    dispatch({
-      type: 'ROUTE_WITH_PARAMS_SET',
-      payload: {
-        route: ,
-        params: {
-          tour_id: tour_id
-        }
-      }
-    });
-    */
     dispatch(actionRouteWithParamsSet('EDIT_TOUR', {
       tour_id: tour_id
     }))

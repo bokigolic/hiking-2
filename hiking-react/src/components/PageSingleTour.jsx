@@ -1,15 +1,25 @@
-import { Rating, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { actionReviewsNeeded } from "../redux/actions";
+import { Rating, Typography } from "@mui/material";
 import { calculateAverageRating, getSingleTourById } from "../utils/tour-utils";
 import FormReview from "./FormReview";
 
 
 const PageSingleTour = (props) => {
+  const dispatch = useDispatch();
   const tours = useSelector((state) => state.tours); // uzimamo routeParams iz redux statea
   const routeParams = useSelector((state) => state.routeParams); // uzimamo routeParams iz redux statea
   const tour_id = routeParams.tour_id;
   const reviews = useSelector(state => state.reviews);
+  const routeFreshness = useSelector((state) => state.routeFreshness);
+
+  useEffect(() => {
+    // bice pozvan svaki put kad se routeFreshness promeni
+    dispatch(actionReviewsNeeded()); // refresh reviewsa
+  }, [routeFreshness]);
+
+
 
   const [tour, setTour] = useState({});
 
