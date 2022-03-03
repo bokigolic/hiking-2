@@ -322,6 +322,16 @@ var root = {
   },
 
 
+  userProfileGet: async (args, context)=>{
+    console.log('userProfileGet resolver');
+    // NAPOMENA obo je PUBLIC API i ne proveravamo token
+    const results = await User.findOne({
+      _id: args.user_id
+    }); // cita iz baze sve iz tabele review
+    return results;
+  },
+
+
 };
 
 module.exports = root;
