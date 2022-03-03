@@ -230,7 +230,7 @@ var root = {
       const user_id = auth.user_id;
       // sad u bazi kreiramo turu
       const results = await Tour.findOneAndUpdate({
-        tour_id: args.tour_id,
+        _id: args.tour_id,
         user_id: user_id
       }, {
         // user_id: user_id,
