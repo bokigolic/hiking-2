@@ -229,3 +229,18 @@ export const actionTourUpdate = (formState) => {
   };
 };
 
+
+export const actionTourDelete = (formState) => {
+  // THUNK
+  return (dispatch) => {
+
+    ajax.tourDelete(formState)
+      .then((response) => {
+        console.log(response);
+        // nakon brisanja ture redirektujemo na MY TOURS stranu
+        dispatch(actionRouteSet('MY_TOURS'));
+      })
+
+  };
+};
+

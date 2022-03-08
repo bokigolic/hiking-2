@@ -1,7 +1,7 @@
 import { Box, Button, Container, CssBaseline, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actionReviewsNeeded, actionRouteSet, actionRouteWithParamsSet, actionToursNeeded } from "../redux/actions";
+import { actionReviewsNeeded, actionRouteSet, actionRouteWithParamsSet, actionTourDelete, actionToursNeeded } from "../redux/actions";
 import Spinner from "./Spinner";
 import TourItem from "./TourItem";
 
@@ -10,6 +10,7 @@ const PageMyTours = (props) => {
   const dispatch = useDispatch();
   const tours = useSelector((state) => state.tours); // uzimamo podatak tours iz globalnog reducovog statea apliakcije
   const routeFreshness = useSelector((state) => state.routeFreshness);
+  const myUserId = useSelector((state) => state.myUserId);
 
   useEffect(() => {
     // bice pozvan svaki put kad se routeFreshness promeni
@@ -27,8 +28,21 @@ const PageMyTours = (props) => {
       tour_id: tour_id
     }))
   };
+  const _handleClickDeleteTour = (tour_id) => {
+    if (window.confirm('Are you sure you want to delete this tour?')) {
+      console.log('deleting tour_id:', tour_id);
+      dispatch(actionTourDelete(tour_id));
+    }
+  };
 
-  const myTours = tours.data; // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
+  // const myTours = tours.data; // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
+  const myTours = tours.data.filter((tour)=>{
+    if (tour.user_id === myUserId) {
+      // my tour
+      return true; // ostaje u nizu My tours
+    }
+    return false; // not my tour
+  }); // privremen osve ture tretiramo kao my dok ne bude zavrsen backend
 
   let jsxSpinner = null;
   if (tours.fetching) {
@@ -53,6 +67,7 @@ const PageMyTours = (props) => {
             type="button"
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onClick={(e) => { _handleClickDeleteTour(tour_id) }}
           >Delete</Button>
         </td>
       </tr>

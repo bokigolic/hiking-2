@@ -4,6 +4,7 @@ import { actionReviewsNeeded } from "../redux/actions";
 import { Rating, Typography } from "@mui/material";
 import { calculateAverageRating, getSingleTourById } from "../utils/tour-utils";
 import FormReview from "./FormReview";
+import ReviewItem from "./ReviewItem";
 
 
 const PageSingleTour = (props) => {
@@ -42,15 +43,7 @@ const PageSingleTour = (props) => {
   // let jsxReviews = reviews.map((review)=>{
   let jsxReviews = filteredReviews.map((review) => {
     return (
-      <div key={review._id}>
-        <Rating
-          name="rating"
-          value={review.rating}
-          readOnly
-        />
-        <div>{review.rating}</div>
-        <div>{review.text}</div>
-      </div>
+      <ReviewItem review={review} />
     );
   });
 

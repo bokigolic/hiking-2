@@ -175,6 +175,23 @@ ajax.tourUpdate = async (formData) => {
 };
 
 
+ajax.tourDelete = async (tour_id) => {
+  // slanje requeta za tourDelete postojece ture
+
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ tourDelete( tour_id: "' + tour_id + '") }'
+  };
+  // takodje za brisanje koristimo i user_id korisnika koji je kreirao turu ali taj podatak ce biti izvucen pomocu tokena
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za tourDelete stigao:', response);
+  return response;
+};
+
+
 ajax.tourGetAll = async () => {
   // slanje requeta za dobijanje svih tura sa backenda
 
@@ -247,6 +264,21 @@ ajax.reviewGetAll = async () => {
   return response;
 };
 
+
+ajax.userProfileGet = async (user_id) => {
+  // slanje requeta za userProfileGet
+
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ userProfileGet( user_id: "' + user_id + '") { is_success _id username } }'
+  };
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za userProfileGet stigao:', response);
+  return response;
+};
 
 
 
