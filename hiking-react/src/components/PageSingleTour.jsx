@@ -8,6 +8,23 @@ import ReviewItem from "./ReviewItem";
 import { ajax } from "../utils/ajax-adapter";
 
 
+const checkIJoined = (isLoggedIn, myUserId, participants) => {
+  // funkcioja otrkiva da li sam ja joinovao ovu turu
+  let i_am_participant = false;
+  if (isLoggedIn) {
+    // ako smo ulogovani
+    participants.forEach((item) => {
+      if (item.user_id === myUserId) {
+        i_am_participant = true;
+      }
+    });
+  } else {
+    // ako nismo ulogovani nismo ni joinovali
+  }
+  return i_am_participant;
+};
+
+
 const PageSingleTour = (props) => {
   const dispatch = useDispatch();
   const tours = useSelector((state) => state.tours); // uzimamo routeParams iz redux statea
@@ -17,8 +34,11 @@ const PageSingleTour = (props) => {
   const routeFreshness = useSelector((state) => state.routeFreshness);
 
   const [participants, setParticipants] = useState([]);
-
   const numberOfParticipants = participants.length;
+
+  const isLoggedIn = useSelector(state => state.isLoggedIn);
+  const myUserId = useSelector(state => state.myUserId);
+  const i_am_participant = checkIJoined(isLoggedIn, myUserId, participants);
 
   useEffect(() => {
     // bice pozvan svaki put kad se routeFreshness promeni
@@ -57,6 +77,12 @@ const PageSingleTour = (props) => {
 
   };
 
+  const handleClickLeave = (e) => {
+    console.log('click leave...');
+
+  };
+
+
   let averageRating = calculateAverageRating(reviews.data, tour_id);
 
   const filteredReviews = reviews.data.filter((review) => {
@@ -73,6 +99,30 @@ const PageSingleTour = (props) => {
       <ReviewItem review={review} />
     );
   });
+
+  let jsxBtnJoinLeave = null;
+  if (i_am_participant) {
+    // leave
+    jsxBtnJoinLeave = (
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleClickLeave}
+      >Leave</Button>
+    );
+  } else {
+    // join
+    jsxBtnJoinLeave = (
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleClickJoin}
+      >Join</Button>
+    );
+  }
+
 
   return (
     <div>
@@ -91,12 +141,7 @@ const PageSingleTour = (props) => {
         readOnly
       />
       <br />
-      <Button
-        type="button"
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={handleClickJoin}
-      >Join</Button>
+      {jsxBtnJoinLeave}
       <Button
         type="button"
         variant="contained"
