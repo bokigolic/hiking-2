@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actionReviewsNeeded } from "../redux/actions";
-import { Rating, Typography } from "@mui/material";
+import { Button, Rating, Typography } from "@mui/material";
 import { calculateAverageRating, getSingleTourById } from "../utils/tour-utils";
 import FormReview from "./FormReview";
 import ReviewItem from "./ReviewItem";
+import { ajax } from "../utils/ajax-adapter";
 
 
 const PageSingleTour = (props) => {
@@ -20,8 +21,6 @@ const PageSingleTour = (props) => {
     dispatch(actionReviewsNeeded()); // refresh reviewsa
   }, [routeFreshness]);
 
-
-
   const [tour, setTour] = useState({});
 
   useEffect(() => {
@@ -29,6 +28,15 @@ const PageSingleTour = (props) => {
     const tour = getSingleTourById(tour_id, tours.data);
     setTour(tour);
   }, [tour_id, tours]);
+
+  const handleClickJoin = (e) => {
+    console.log('click join...');
+    ajax.tourJoin(tour_id)
+      .then((response) => {
+        // ovde treba refreshovati stranicu kada se join-ovanje upise na backendu
+      })
+      
+  };
 
   let averageRating = calculateAverageRating(reviews.data, tour_id);
 
@@ -62,6 +70,19 @@ const PageSingleTour = (props) => {
         value={averageRating}
         readOnly
       />
+      <br />
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleClickJoin}
+      >Join</Button>
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={(e) => { }}
+      >Like</Button>
 
       <h2>Reviews</h2>
       {jsxReviews}
