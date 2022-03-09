@@ -236,6 +236,21 @@ ajax.tourJoin = async (tour_id) => {
 };
 
 
+ajax.tourLeave = async (tour_id) => {
+  // slanje requeta za participate in tour
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ tourLeave( tour_id: "' + tour_id + '" ) }'
+  };
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za tourLeave stigao:', response);
+  return response;
+};
+
+
 ajax.tourParticipantsGet = async (tour_id) => {
   // slanje requeta za participate in tour
   // GRAPHQL

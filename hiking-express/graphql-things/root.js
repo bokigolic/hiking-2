@@ -140,6 +140,12 @@ var root = {
     // mora iz baze sesija da obrise onu sa ovim tokenom
     await AuthSession.findOneAndDelete({
       token: token
+    }, function (err, docs) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Deleted docs: ", docs);
+      }
     });
     return true; // izlogvan ismo
   },
@@ -267,6 +273,12 @@ var root = {
       const results = await Tour.findOneAndDelete({
         _id: args.tour_id,
         user_id: user_id
+      }, function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Deleted docs: ", docs);
+        }
       });
       // TODO: ne sme da obrise nista cak i ako id ne valja
       console.log('mongoose results');
@@ -305,6 +317,38 @@ var root = {
         tour_id: args.tour_id,
       });
       console.log(results);
+      return true;
+    } else {
+      // ako nismo ulogvani necemo ni da kreiramo turu
+      return false;
+    }
+  },
+
+
+  tourLeave: async (args, context) => {
+    console.log('tourLeave resolver');
+    // If context is not provided, the request object is passed as the context.
+    console.log('args');
+    console.log(args);
+    const req = context;
+    const token = req.headers[config.TOKEN_HEADER_KEY];
+    console.log(token);
+    const auth = await checkIsLoggedIn(token);
+    if (auth.is_logged_in) {
+      // ulogovani smo, sad mozemo da kreiramo turu
+      const user_id = auth.user_id;
+      // sad u bazi brisemo participanta i tako radimo leave
+      const results = Participation.findOneAndDelete({
+        tour_id: args.tour_id,
+        user_id: user_id
+      }, function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Deleted docs: ", docs);
+        }
+      });
+      // console.log(results);
       return true;
     } else {
       // ako nismo ulogvani necemo ni da kreiramo turu

@@ -79,6 +79,13 @@ const PageSingleTour = (props) => {
 
   const handleClickLeave = (e) => {
     console.log('click leave...');
+    ajax.tourLeave(tour_id)
+      .then((response) => {
+        // ovde pozivamo refrresh na osnovu kojeg cem oda dobijemo svezije participante
+        dispatch({
+          type: 'REFRESH'
+        });
+      })
 
   };
 
