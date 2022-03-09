@@ -313,6 +313,18 @@ var root = {
   },
 
 
+  tourParticipantsGet: async (args, context) => {
+    console.log('tourParticipantsGet resolver');
+    // NAPOMENA ovo je PUBLIC API i ne proveravamo token
+    console.log('args');
+    console.log(args);
+    const results = await Participation.find({
+      tour_id: args.tour_id
+    }); // cita iz baze iz tabele participation samo one koje su joinovali trazenu turu
+    return results;
+  },
+
+
   reviewCreate: async (args, context) => {
     console.log('reviewCreate resolver');
     // If context is not provided, the request object is passed as the context.

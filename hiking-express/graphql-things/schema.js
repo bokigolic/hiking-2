@@ -20,6 +20,12 @@ var schema = buildSchema(`
     max_participants: Int
   }
 
+  type Participant {
+    _id: String
+    user_id: String
+    tour_id: String
+  }
+
   type Review {
     _id: String
     user_id: String
@@ -42,6 +48,7 @@ var schema = buildSchema(`
     tourDelete(tour_id: String): Boolean
     tourGetAll: [Tour]
     tourJoin(tour_id: String): Boolean
+    tourParticipantsGet(tour_id: String): [Participant]
     reviewCreate(rating: Int, text: String, tour_id: String): Boolean
     reviewGetAll: [Review]
     userProfileGet(user_id: String): User

@@ -16,9 +16,25 @@ const PageSingleTour = (props) => {
   const reviews = useSelector(state => state.reviews);
   const routeFreshness = useSelector((state) => state.routeFreshness);
 
+  const [participants, setParticipants] = useState([]);
+
+  const numberOfParticipants = participants.length;
+
   useEffect(() => {
     // bice pozvan svaki put kad se routeFreshness promeni
+
     dispatch(actionReviewsNeeded()); // refresh reviewsa
+
+    // refresh participants
+    ajax.tourParticipantsGet(tour_id)
+      .then((response) => {
+        console.log('response za aprticipnte se vratio');
+        console.log(response);
+        if (response && response.data && response.data.data && Array.isArray(response.data.data.tourParticipantsGet)) {
+          setParticipants(response.data.data.tourParticipantsGet); // upisujumo participante iz baze u lokalni state ove komponente
+        }
+      })
+
   }, [routeFreshness]);
 
   const [tour, setTour] = useState({});
@@ -33,9 +49,12 @@ const PageSingleTour = (props) => {
     console.log('click join...');
     ajax.tourJoin(tour_id)
       .then((response) => {
-        // ovde treba refreshovati stranicu kada se join-ovanje upise na backendu
+        // ovde pozivamo refrresh na osnovu kojeg cem oda dobijemo svezije participante
+        dispatch({
+          type: 'REFRESH'
+        });
       })
-      
+
   };
 
   let averageRating = calculateAverageRating(reviews.data, tour_id);
@@ -63,6 +82,7 @@ const PageSingleTour = (props) => {
       <div>Trail length: {tour.trail_length}</div>
       <div>Difficulty: {tour.difficulty}</div>
       <div>Max. number of participants: {tour.max_participants}</div>
+      <div>Already joined: {numberOfParticipants}</div>
       <div>Average rating: {averageRating}</div>
       <Typography component="legend">Average rating</Typography>
       <Rating
