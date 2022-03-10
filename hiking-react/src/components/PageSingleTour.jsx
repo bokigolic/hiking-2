@@ -89,6 +89,30 @@ const PageSingleTour = (props) => {
 
   };
 
+  const handleClickLike = (e) => {
+    console.log('click like...');
+    ajax.tourLike(tour_id)
+      .then((response) => {
+        // ovde pozivamo refrresh na osnovu kojeg cem oda dobijemo svezije participante
+        dispatch({
+          type: 'REFRESH'
+        });
+      })
+
+  };
+
+  const handleClickUnlike = (e) => {
+    console.log('click unlike...');
+    ajax.tourLike(tour_id)
+      .then((response) => {
+        // ovde pozivamo refrresh na osnovu kojeg cem oda dobijemo svezije participante
+        dispatch({
+          type: 'REFRESH'
+        });
+      })
+
+  };
+
 
   let averageRating = calculateAverageRating(reviews.data, tour_id);
 
@@ -131,6 +155,30 @@ const PageSingleTour = (props) => {
   }
 
 
+  let jsxBtnLikeUnlike = null;
+  if (true) {
+    // not liked
+    jsxBtnLikeUnlike = (
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleClickLike}
+      >Like</Button>
+    );
+  } else {
+    // already liked
+    jsxBtnLikeUnlike = (
+      <Button
+      type="button"
+      variant="contained"
+      sx={{ mt: 3, mb: 2 }}
+      onClick={handleClickUnlike}
+    >Unlike</Button>
+    );
+  }
+
+
   return (
     <div>
       <h1>{tour.name}</h1>
@@ -149,12 +197,7 @@ const PageSingleTour = (props) => {
       />
       <br />
       {jsxBtnJoinLeave}
-      <Button
-        type="button"
-        variant="contained"
-        sx={{ mt: 3, mb: 2 }}
-        onClick={(e) => { }}
-      >Like</Button>
+      {jsxBtnLikeUnlike}
 
       <h2>Reviews</h2>
       {jsxReviews}

@@ -6,6 +6,7 @@ const AuthSession = require('../models/auth-session-model');
 const Tour = require('../models/tour-model');
 const Review = require('../models/review-model');
 const Participation = require('../models/participation-model');
+const TourLike = require('../models/tour-like-model');
 
 
 // HELPERS
@@ -352,6 +353,64 @@ var root = {
       return true;
     } else {
       // ako nismo ulogvani necemo ni da kreiramo turu
+      return false;
+    }
+  },
+
+
+  tourLike: async (args, context) => {
+    console.log('tourLike resolver');
+    // If context is not provided, the request object is passed as the context.
+    console.log('args');
+    console.log(args);
+    const req = context;
+    const token = req.headers[config.TOKEN_HEADER_KEY];
+    console.log(token);
+    const auth = await checkIsLoggedIn(token);
+    if (auth.is_logged_in) {
+      // ulogovani smo, sad mozemo da
+      const user_id = auth.user_id;
+      // sad u bazi upisujumo like
+      const results = TourLike.create({
+        user_id: user_id,
+        tour_id: args.tour_id,
+      });
+      console.log(results);
+      return true;
+    } else {
+      // ako nismo ulogvani necemo ni da odradimo
+      return false;
+    }
+  },
+
+
+  tourUnlike: async (args, context) => {
+    console.log('tourUnlike resolver');
+    // If context is not provided, the request object is passed as the context.
+    console.log('args');
+    console.log(args);
+    const req = context;
+    const token = req.headers[config.TOKEN_HEADER_KEY];
+    console.log(token);
+    const auth = await checkIsLoggedIn(token);
+    if (auth.is_logged_in) {
+      // ulogovani smo, sad mozemo da
+      const user_id = auth.user_id;
+      // sad u bazi brisemo participanta i tako radimo leave
+      const results = TourLike.findOneAndDelete({
+        tour_id: args.tour_id,
+        user_id: user_id
+      }, function (err, docs) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Deleted docs: ", docs);
+        }
+      });
+      // console.log(results);
+      return true;
+    } else {
+      // ako nismo ulogvani necemo ni da odradimo
       return false;
     }
   },

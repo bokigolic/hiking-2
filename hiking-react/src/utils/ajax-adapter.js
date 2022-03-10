@@ -251,6 +251,36 @@ ajax.tourLeave = async (tour_id) => {
 };
 
 
+ajax.tourLike = async (tour_id) => {
+  // slanje requeta za like ture
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ tourLike( tour_id: "' + tour_id + '" ) }'
+  };
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za tourLike stigao:', response);
+  return response;
+};
+
+
+ajax.tourUnlike = async (tour_id) => {
+  // slanje requeta za brisanej like tour
+  // GRAPHQL
+  const graphql_query = {
+    query: '{ tourUnlike( tour_id: "' + tour_id + '" ) }'
+  };
+  const data_prepared = convert_to_json(graphql_query); // ENCODE to json..
+  const response = await axios.post(urlLib.apiGraphQL(), data_prepared, {
+    headers: ajax.preparedHeadersForAxios
+  });
+  console.log('axios response za tourUnlike stigao:', response);
+  return response;
+};
+
+
 ajax.tourParticipantsGet = async (tour_id) => {
   // slanje requeta za participate in tour
   // GRAPHQL

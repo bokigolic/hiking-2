@@ -49,6 +49,8 @@ var schema = buildSchema(`
     tourGetAll: [Tour]
     tourJoin(tour_id: String): Boolean
     tourLeave(tour_id: String): Boolean
+    tourLike(tour_id: String): Boolean
+    tourUnlike(tour_id: String): Boolean
     tourParticipantsGet(tour_id: String): [Participant]
     reviewCreate(rating: Int, text: String, tour_id: String): Boolean
     reviewGetAll: [Review]
