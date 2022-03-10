@@ -313,7 +313,7 @@ var root = {
       // ulogovani smo, sad mozemo da kreiramo turu
       const user_id = auth.user_id;
       // NE DOVOLJAVAMO UPIS AKO JE KORISNIK VEC JOINED
-      Participation.countDocuments({
+      await Participation.countDocuments({
         user_id: user_id,
         tour_id: args.tour_id,
       }, function (err, counted) {
@@ -355,7 +355,7 @@ var root = {
       // ulogovani smo, sad mozemo da kreiramo turu
       const user_id = auth.user_id;
       // sad u bazi brisemo participanta i tako radimo leave
-      const results = Participation.findOneAndDelete({
+      const results = await Participation.findOneAndDelete({
         tour_id: args.tour_id,
         user_id: user_id
       }, function (err, docs) {
@@ -386,8 +386,8 @@ var root = {
     if (auth.is_logged_in) {
       // ulogovani smo, sad mozemo da
       const user_id = auth.user_id;
-      // NE DOVOLJAVAMO UPIS AKO JE KORISNIK VEC LAJKOVAO
-      TourLike.countDocuments({
+      // NE DOZVOLJAVAMO UPIS AKO JE KORISNIK VEC LAJKOVAO
+      await TourLike.countDocuments({
         user_id: user_id,
         tour_id: args.tour_id,
       }, function (err, counted) {
@@ -428,7 +428,7 @@ var root = {
       // ulogovani smo, sad mozemo da
       const user_id = auth.user_id;
       // sad u bazi brisemo participanta i tako radimo leave
-      const results = TourLike.findOneAndDelete({
+      const results = await TourLike.findOneAndDelete({
         tour_id: args.tour_id,
         user_id: user_id
       }, function (err, docs) {
@@ -483,14 +483,31 @@ var root = {
     if (auth.is_logged_in) {
       // ulogovani smo, sad mozemo da kreiramo turu
       const user_id = auth.user_id;
-      // sad u bazi kreiramo turu
-      const results = await Review.create({
+      // NE DOZVOLJAVAMO UPIS AKO JE KORISNIK VEC NAPRAVIO REVIEW ZA ISTU TURU
+      await TourLike.countDocuments({
         user_id: user_id,
         tour_id: args.tour_id,
-        rating: args.rating,
-        text: args.text
+      }, function (err, counted) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Conted docs: ", counted);
+          if (counted > 0) {
+            // ne upisujemo dupoliakte
+            console.log('*** preskacemo jer vec ima raview tog korsnika za tu turu');
+          } else {
+            // sad u bazi kreiramo turu
+            console.log('*** kreiramo jer je counted 0');
+            const results = Review.create({
+              user_id: user_id,
+              tour_id: args.tour_id,
+              rating: args.rating,
+              text: args.text
+            });
+            console.log(results);
+          }
+        }
       });
-      console.log(results);
       return true;
     } else {
       // ako nismo ulogvani necemo ni da kreiramo turu
