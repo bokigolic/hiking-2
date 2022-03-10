@@ -292,7 +292,11 @@ ajax.tourParticipantsGet = async (tour_id) => {
     headers: ajax.preparedHeadersForAxios // ovo je PUBLIC api ali token ipak saljemo iako ne igra ulogu
   });
   console.log('axios response za tourParticipantsGet stigao:', response);
-  return response;
+  // obrada responsea
+  if (response && response.data && response.data.data && Array.isArray(response.data.data.tourParticipantsGet)) {
+    return response.data.data.tourParticipantsGet;
+  }
+  return [];
 };
 
 
@@ -307,7 +311,11 @@ ajax.tourLikeListGet = async (tour_id) => {
     headers: ajax.preparedHeadersForAxios // ovo je PUBLIC api ali token ipak saljemo iako ne igra ulogu
   });
   console.log('axios response za tourLikeListGet stigao:', response);
-  return response;
+  // obrada responsea
+  if (response && response.data && response.data.data && Array.isArray(response.data.data.tourLikeListGet)) {
+    return response.data.data.tourLikeListGet;
+  }
+  return [];
 };
 
 

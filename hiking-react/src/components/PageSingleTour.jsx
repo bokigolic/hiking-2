@@ -69,19 +69,16 @@ const PageSingleTour = (props) => {
     // refresh participants
     ajax.tourParticipantsGet(tour_id)
       .then((response) => {
-        console.log('response za aprticipnte se vratio');
+        // ovde je stigao vec obradjeni response
         console.log(response);
-        if (response && response.data && response.data.data && Array.isArray(response.data.data.tourParticipantsGet)) {
-          setParticipants(response.data.data.tourParticipantsGet); // upisujumo participante iz baze u lokalni state ove komponente
-        }
+        setParticipants(response); // upisujumo participante iz baze u lokalni state ove komponente
       })
 
     // refresh likes
     ajax.tourLikeListGet(tour_id)
       .then((response) => {
-        if (response && response.data && response.data.data && Array.isArray(response.data.data.tourLikeListGet)) {
-          setLikeList(response.data.data.tourLikeListGet); // upisujumo lajkove iz baze u lokalni state ove komponente
-        }
+        // ovde je stigao vec obradjeni response
+        setLikeList(response); // upisujumo lajkove iz baze u lokalni state ove komponente
       })
 
   }, [routeFreshness]);
