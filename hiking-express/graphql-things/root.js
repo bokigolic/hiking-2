@@ -312,10 +312,26 @@ var root = {
     if (auth.is_logged_in) {
       // ulogovani smo, sad mozemo da kreiramo turu
       const user_id = auth.user_id;
-      // sad u bazi upisujumo participate odnosno joinovanje ture
-      const results = Participation.create({
+      // NE DOVOLJAVAMO UPIS AKO JE KORISNIK VEC JOINED
+      Participation.countDocuments({
         user_id: user_id,
         tour_id: args.tour_id,
+      }, function (err, counted) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Conted docs: ", counted);
+          if (counted > 0) {
+            // ne upisujemo dupoliakte
+          } else {
+            // sad u bazi upisujumo participate odnosno joinovanje ture
+            const results = Participation.create({
+              user_id: user_id,
+              tour_id: args.tour_id,
+            });
+            console.log(results);
+          }
+        }
       });
       console.log(results);
       return true;
@@ -371,9 +387,9 @@ var root = {
       // ulogovani smo, sad mozemo da
       const user_id = auth.user_id;
       // NE DOVOLJAVAMO UPIS AKO JE KORISNIK VEC LAJKOVAO
-      TourLike.countDocuments({ 
+      TourLike.countDocuments({
         user_id: user_id,
-        tour_id: args.tour_id, 
+        tour_id: args.tour_id,
       }, function (err, counted) {
         if (err) {
           console.log(err);
