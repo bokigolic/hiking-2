@@ -25,6 +25,23 @@ const checkIJoined = (isLoggedIn, myUserId, participants) => {
 };
 
 
+const checkILiked = (isLoggedIn, myUserId, likeList) => {
+  // funkcioja otrkiva da li sam ja lajkovao ovu turu
+  let i_am_liked = false;
+  if (isLoggedIn) {
+    // ako smo ulogovani
+    likeList.forEach((item) => {
+      if (item.user_id === myUserId) {
+        i_am_liked = true;
+      }
+    });
+  } else {
+    // ako nismo ulogovani nismo ni lajkovali
+  }
+  return i_am_liked;
+};
+
+
 const PageSingleTour = (props) => {
   const dispatch = useDispatch();
   const tours = useSelector((state) => state.tours); // uzimamo routeParams iz redux statea
@@ -35,10 +52,14 @@ const PageSingleTour = (props) => {
 
   const [participants, setParticipants] = useState([]);
   const numberOfParticipants = participants.length;
+  const [likeList, setLikeList] = useState([]);
+  const numberOfLikes = likeList.length;
 
   const isLoggedIn = useSelector(state => state.isLoggedIn);
   const myUserId = useSelector(state => state.myUserId);
   const i_am_participant = checkIJoined(isLoggedIn, myUserId, participants);
+  const i_am_liked = checkILiked(isLoggedIn, myUserId, likeList);
+
 
   useEffect(() => {
     // bice pozvan svaki put kad se routeFreshness promeni
@@ -52,6 +73,14 @@ const PageSingleTour = (props) => {
         console.log(response);
         if (response && response.data && response.data.data && Array.isArray(response.data.data.tourParticipantsGet)) {
           setParticipants(response.data.data.tourParticipantsGet); // upisujumo participante iz baze u lokalni state ove komponente
+        }
+      })
+
+    // refresh likes
+    ajax.tourLikeListGet(tour_id)
+      .then((response) => {
+        if (response && response.data && response.data.data && Array.isArray(response.data.data.tourLikeListGet)) {
+          setLikeList(response.data.data.tourLikeListGet); // upisujumo lajkove iz baze u lokalni state ove komponente
         }
       })
 
@@ -103,7 +132,7 @@ const PageSingleTour = (props) => {
 
   const handleClickUnlike = (e) => {
     console.log('click unlike...');
-    ajax.tourLike(tour_id)
+    ajax.tourUnlike(tour_id)
       .then((response) => {
         // ovde pozivamo refrresh na osnovu kojeg cem oda dobijemo svezije participante
         dispatch({
@@ -156,7 +185,17 @@ const PageSingleTour = (props) => {
 
 
   let jsxBtnLikeUnlike = null;
-  if (true) {
+  if (i_am_liked) {
+    // already liked
+    jsxBtnLikeUnlike = (
+      <Button
+        type="button"
+        variant="contained"
+        sx={{ mt: 3, mb: 2 }}
+        onClick={handleClickUnlike}
+      >Unlike</Button>
+    );
+  } else {
     // not liked
     jsxBtnLikeUnlike = (
       <Button
@@ -165,16 +204,6 @@ const PageSingleTour = (props) => {
         sx={{ mt: 3, mb: 2 }}
         onClick={handleClickLike}
       >Like</Button>
-    );
-  } else {
-    // already liked
-    jsxBtnLikeUnlike = (
-      <Button
-      type="button"
-      variant="contained"
-      sx={{ mt: 3, mb: 2 }}
-      onClick={handleClickUnlike}
-    >Unlike</Button>
     );
   }
 
@@ -188,6 +217,7 @@ const PageSingleTour = (props) => {
       <div>Difficulty: {tour.difficulty}</div>
       <div>Max. number of participants: {tour.max_participants}</div>
       <div>Already joined: {numberOfParticipants}</div>
+      <div>Likes: {numberOfLikes}</div>
       <div>Average rating: {averageRating}</div>
       <Typography component="legend">Average rating</Typography>
       <Rating

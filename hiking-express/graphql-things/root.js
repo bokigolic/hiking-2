@@ -428,6 +428,18 @@ var root = {
   },
 
 
+  tourLikeListGet: async (args, context) => {
+    console.log('tourLikeListGet resolver');
+    // NAPOMENA ovo je PUBLIC API i ne proveravamo token
+    console.log('args');
+    console.log(args);
+    const results = await TourLike.find({
+      tour_id: args.tour_id
+    }); // cita iz baze iz tabele tourlike samo one koje su lajkovali trazenu turu
+    return results;
+  },
+
+
   reviewCreate: async (args, context) => {
     console.log('reviewCreate resolver');
     // If context is not provided, the request object is passed as the context.
